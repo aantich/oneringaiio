@@ -1,8 +1,9 @@
-_site/
+node_modules/
+dist/
+.DS_Store
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
 .bundle/
 vendor/
 Gemfile.lock
-.DS_Store
