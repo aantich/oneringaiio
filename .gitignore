@@ -7,3 +7,4 @@ dist/
 .bundle/
 vendor/
 Gemfile.lock
+launch-posts.md
