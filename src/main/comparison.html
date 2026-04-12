@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OneRingAI vs CrewAI vs LangChain - Feature Comparison</title>
-    <meta name="description" content="Detailed feature comparison between OneRingAI, CrewAI, and LangChain. See how OneRingAI's connector-first architecture compares.">
-    <meta name="keywords" content="oneringai, crewai, langchain, ai framework comparison, agent framework, typescript ai, llm framework">
+    <title>OneRingAI vs CrewAI vs LangChain vs OpenClaw - Feature Comparison</title>
+    <meta name="description" content="Detailed feature comparison between OneRingAI, CrewAI, LangChain, and OpenClaw. See how OneRingAI's connector-first architecture compares to the competition.">
+    <meta name="keywords" content="oneringai, crewai, langchain, openclaw, ai framework comparison, agent framework, typescript ai, llm framework">
     <meta name="theme-color" content="#178d72">
 
     <!-- Open Graph Tags -->
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="OneRingAI vs CrewAI vs LangChain" />
-    <meta property="og:description" content="Detailed feature comparison between OneRingAI, CrewAI, and LangChain." />
+    <meta property="og:title" content="OneRingAI vs CrewAI vs LangChain vs OpenClaw" />
+    <meta property="og:description" content="Detailed feature comparison between OneRingAI, CrewAI, LangChain, and OpenClaw." />
 
     <!-- preload head styles -->
     <link rel="preload" href="../assets/css/fonts.css" as="style">
@@ -73,6 +73,8 @@
         .uc-dark .comparison-table { color: rgba(255,255,255,0.85); }
         .why-callout { background: rgba(23, 141, 114, 0.08); border-left: 4px solid #178d72; padding: 1rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1.5rem 0 3rem; }
         .uc-dark .why-callout { background: rgba(23, 141, 114, 0.15); }
+        .note-callout { background: rgba(100, 100, 100, 0.06); border-left: 4px solid #999; padding: 1rem 1.5rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0 2rem; font-size: 0.9rem; }
+        .uc-dark .note-callout { background: rgba(255, 255, 255, 0.05); border-left-color: #666; }
     </style>
 </head>
 
@@ -86,9 +88,12 @@
                     <!-- Hero -->
                     <div class="text-center mb-6">
                         <span class="fs-7 fw-medium py-narrow px-2 border rounded-pill text-primary dark:text-tertiary">Comparison</span>
-                        <h1 class="h2 lg:h1 mt-2 mb-1">OneRingAI vs CrewAI vs LangChain</h1>
-                        <p class="fs-5 opacity-70">Feature Comparison</p>
-                        <p class="fs-6 mt-2 mx-auto" style="max-width: 800px;">OneRingAI is a single, unified TypeScript library (62K LOC, 20 deps) that replaces the sprawling ecosystems of LangChain/LangGraph (100K+ LOC, 50+ deps) and the Python-only CrewAI — with a connector-first architecture that treats authentication, resilience, and multi-vendor support as first-class primitives rather than afterthoughts.</p>
+                        <h1 class="h2 lg:h1 mt-2 mb-1">OneRingAI vs LangChain vs CrewAI vs OpenClaw</h1>
+                        <p class="fs-5 opacity-70">Feature Comparison &mdash; April 2026</p>
+                        <p class="fs-6 mt-2 mx-auto" style="max-width: 800px;">OneRingAI is a unified TypeScript agent library (~109K LOC, 20 deps) that replaces the sprawling ecosystems of LangChain/LangGraph (200K+ LOC, 15+ packages) and the Python-only CrewAI (~100K LOC, 33 deps) &mdash; with a connector-first architecture that treats authentication, security, resilience, and multi-vendor support as first-class primitives rather than afterthoughts.</p>
+                    </div>
+                    <div class="note-callout">
+                        <strong>About OpenClaw:</strong> OpenClaw (~355K GitHub stars) is a self-hosted <em>personal AI assistant platform</em> for messaging channels (WhatsApp, Slack, Telegram, etc.), not a developer SDK. It is included here for architectural comparison, but serves a fundamentally different use case.
                     </div>
 
                     <!-- 1. Architecture Philosophy -->
@@ -101,44 +106,57 @@
                                     <th>OneRingAI</th>
                                     <th>LangChain / LangGraph</th>
                                     <th>CrewAI</th>
+                                    <th>OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Core paradigm</td>
                                     <td class="oneringai-col">Connector-first (auth registry &rarr; agent &rarr; provider)</td>
-                                    <td>Chains / Runnables &rarr; Graph nodes</td>
-                                    <td>Role-based agent crews</td>
+                                    <td>Runnable composition (LCEL) &rarr; Graph nodes</td>
+                                    <td>Role-based agent crews + event-driven flows</td>
+                                    <td>Gateway &rarr; channels &rarr; skills</td>
                                 </tr>
                                 <tr>
                                     <td>Language</td>
                                     <td class="oneringai-col">TypeScript (strict)</td>
-                                    <td>Python (primary), JS (secondary)</td>
+                                    <td>TypeScript (primary), Python (separate repo)</td>
                                     <td>Python only</td>
+                                    <td>TypeScript</td>
                                 </tr>
                                 <tr>
                                     <td>LOC / Deps</td>
-                                    <td class="oneringai-col">62K LOC / 20 deps</td>
-                                    <td>100K+ LOC / 50+ deps</td>
-                                    <td>~30K LOC / 20+ deps</td>
+                                    <td class="oneringai-col">~109K LOC / 20 deps</td>
+                                    <td>~200K+ LOC / 15+ packages</td>
+                                    <td>~100K LOC / 33 deps</td>
+                                    <td>~300K+ LOC / extensions</td>
+                                </tr>
+                                <tr>
+                                    <td>Type</td>
+                                    <td class="oneringai-col">Developer SDK / library</td>
+                                    <td>Developer SDK / framework</td>
+                                    <td>Developer framework</td>
+                                    <td>Self-hosted product</td>
                                 </tr>
                                 <tr>
                                     <td>Abstraction layers</td>
                                     <td class="oneringai-col">1 (Connector &rarr; Agent &rarr; Provider)</td>
-                                    <td>4+ (Chains, Runnables, Agents, Callbacks, Tools)</td>
-                                    <td>2 (Agents, Tasks, Crews + Flows)</td>
+                                    <td>4+ (Runnables, Chains, Agents, Callbacks, Tools, Graph)</td>
+                                    <td>3 (Agents, Tasks, Crews + Flows)</td>
+                                    <td>3 (Gateway, Channels, Skills/Plugins)</td>
                                 </tr>
                                 <tr>
                                     <td>Learning curve</td>
                                     <td class="oneringai-col">Low &mdash; single Agent.create() entry point</td>
-                                    <td>High</td>
-                                    <td>Medium &mdash; role metaphor is intuitive but limited</td>
+                                    <td>High &mdash; devs report "digging deep into source code" for simple tasks</td>
+                                    <td>Low &mdash; role/goal/backstory metaphor is very intuitive</td>
+                                    <td>Low &mdash; install and run</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="why-callout">
-                        <strong>Why OneRingAI wins:</strong> Single-library, minimal-dependency design avoids the "abstraction maze" that has plagued LangChain.
+                        <strong>Why OneRingAI wins:</strong> Single-library, minimal-dependency design avoids the "abstraction maze" that has plagued LangChain. Developers report <strong>40% performance improvement</strong> when switching from LangChain's Runnable layers to direct SDK calls &mdash; OneRingAI's thin abstraction gives you that performance without losing the framework benefits.
                     </div>
 
                     <!-- 2. Multi-Vendor LLM Support -->
@@ -151,19 +169,22 @@
                                     <th>OneRingAI</th>
                                     <th>LangChain / LangGraph</th>
                                     <th>CrewAI</th>
+                                    <th>OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Vendors</td>
                                     <td class="oneringai-col">12 native (OpenAI, Anthropic, Google, Vertex, Groq, Together, Perplexity, Grok, DeepSeek, Mistral, Ollama, Custom)</td>
-                                    <td>Many via community packages</td>
-                                    <td>Via LiteLLM (indirect)</td>
+                                    <td>36+ via dedicated @langchain/* packages</td>
+                                    <td>6 native + LiteLLM fallback for 20+</td>
+                                    <td>30+ via extensions</td>
                                 </tr>
                                 <tr>
                                     <td>Model registry</td>
                                     <td class="oneringai-col">36 LLMs with pricing, context windows, 10+ feature flags</td>
                                     <td>No centralized registry</td>
+                                    <td>100+ models mapped for context windows</td>
                                     <td>No registry</td>
                                 </tr>
                                 <tr>
@@ -171,24 +192,41 @@
                                     <td class="oneringai-col">calculateCost(model, in, out) &rarr; exact USD</td>
                                     <td>Third-party (LangSmith)</td>
                                     <td>No built-in</td>
+                                    <td>No built-in</td>
                                 </tr>
                                 <tr>
                                     <td>Multi-key per vendor</td>
                                     <td class="oneringai-col">Named connectors: openai-main, openai-backup</td>
                                     <td>Not native</td>
                                     <td>Not native</td>
+                                    <td>Auth profile rotation with failover</td>
                                 </tr>
                                 <tr>
                                     <td>Vendor switching</td>
                                     <td class="oneringai-col">Change connector name, nothing else</td>
                                     <td>Swap provider class + config</td>
                                     <td>Change LLM string</td>
+                                    <td>Change extension config</td>
+                                </tr>
+                                <tr>
+                                    <td>Thinking / reasoning</td>
+                                    <td class="oneringai-col">Vendor-agnostic config &mdash; maps to Anthropic budgets, OpenAI effort, Google thinkingLevel</td>
+                                    <td>Per-provider configuration</td>
+                                    <td>No unified abstraction</td>
+                                    <td>Per-provider</td>
+                                </tr>
+                                <tr>
+                                    <td>Structured output</td>
+                                    <td class="oneringai-col">responseFormat on Agent with JSON Schema</td>
+                                    <td>withStructuredOutput() with auto-strategy (native or tool-calling fallback)</td>
+                                    <td>output_pydantic / output_json on Task with guardrails</td>
+                                    <td>Not available</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="why-callout">
-                        <strong>Why OneRingAI wins:</strong> Native vendor support with typed model registry. Named connectors allow multi-key setups (prod/backup/dev).
+                        <strong>Why OneRingAI wins:</strong> Native vendor support with typed model registry and built-in cost tracking. Named connectors allow multi-key setups (prod/backup/dev). Vendor-agnostic thinking/reasoning config &mdash; write once, run on any provider.
                     </div>
 
                     <!-- 3. Authentication & Connector System -->
@@ -201,48 +239,54 @@
                                     <th>OneRingAI</th>
                                     <th>LangChain / LangGraph</th>
                                     <th>CrewAI</th>
+                                    <th>OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Auth model</td>
                                     <td class="oneringai-col">Centralized Connector registry (single source of truth)</td>
-                                    <td>Scattered &mdash; each integration has own auth</td>
+                                    <td>No auth abstraction &mdash; each integration has own auth</td>
                                     <td>Env vars or LiteLLM config</td>
+                                    <td>Auth profiles per extension</td>
                                 </tr>
                                 <tr>
                                     <td>OAuth 2.0</td>
-                                    <td class="oneringai-col">Built-in: 4 flows, AES-256-GCM encrypted storage, 43+ vendor templates</td>
-                                    <td>Via third-party</td>
+                                    <td class="oneringai-col">Built-in: 4 flows (PKCE, Client Credentials, JWT Bearer, Static Token), AES-256-GCM encrypted storage, 43+ vendor templates</td>
+                                    <td>Not built-in</td>
+                                    <td>Not built-in</td>
                                     <td>Not built-in</td>
                                 </tr>
                                 <tr>
                                     <td>Multi-user isolation</td>
-                                    <td class="oneringai-col">userId scoping + connector allowlist per agent</td>
+                                    <td class="oneringai-col">userId + accountId scoping, connector allowlist per agent</td>
                                     <td>Manual implementation</td>
                                     <td>Not supported</td>
+                                    <td>Single-user trust model</td>
                                 </tr>
                                 <tr>
                                     <td>Resilience</td>
-                                    <td class="oneringai-col">Per-connector: circuit breaker, retry w/ exponential backoff, timeout</td>
-                                    <td>Manual or via retries wrapper</td>
+                                    <td class="oneringai-col">Per-connector: circuit breaker, retry w/ exponential backoff + jitter, timeout via AbortController</td>
+                                    <td>Basic retries via Runnable wrapper</td>
                                     <td>Basic retry via LiteLLM</td>
+                                    <td>Provider failover policies</td>
                                 </tr>
                                 <tr>
                                     <td>External API tools</td>
-                                    <td class="oneringai-col">ConnectorTools.for('github') &mdash; auto-generates API tool from any connector</td>
+                                    <td class="oneringai-col">ConnectorTools.for('github') &mdash; auto-generates API tool from any connector (35+ services)</td>
                                     <td>Community tool packages</td>
                                     <td>Via Composio (external)</td>
+                                    <td>5,400+ skills on ClawHub marketplace</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="why-callout">
-                        <strong>Why OneRingAI wins:</strong> Authentication is the hardest production problem. OneRingAI's connector-first design means everything goes through a typed registry with built-in OAuth, encrypted storage, and per-connector resilience.
+                        <strong>Why OneRingAI wins:</strong> Authentication is the hardest production problem. OneRingAI is the <strong>only framework</strong> with connector-first design &mdash; a typed registry with built-in OAuth, encrypted storage, multi-user isolation, and per-connector resilience. No other framework even has an auth abstraction.
                     </div>
 
-                    <!-- 4. Context Management -->
-                    <h3 class="h4 lg:h3 mt-6 mb-3">4. Context Management</h3>
+                    <!-- 4. Security & Permissions -->
+                    <h3 class="h4 lg:h3 mt-6 mb-3">4. Security &amp; Permissions</h3>
                     <div class="table-responsive">
                         <table class="table table-bordered comparison-table">
                             <thead>
@@ -251,60 +295,159 @@
                                     <th>OneRingAI</th>
                                     <th>LangChain / LangGraph</th>
                                     <th>CrewAI</th>
+                                    <th>OpenClaw</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Permission system</td>
+                                    <td class="oneringai-col">3-tier: user rules &rarr; delegation hierarchy &rarr; 8-policy chain</td>
+                                    <td>None built-in</td>
+                                    <td>None in OSS (RBAC in paid AMP only)</td>
+                                    <td>Tool policy pipeline with exec approvals</td>
+                                </tr>
+                                <tr>
+                                    <td>Tool-level scoping</td>
+                                    <td class="oneringai-col">Per-tool: always / session / once / never</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                    <td>Exec approval per command</td>
+                                </tr>
+                                <tr>
+                                    <td>Built-in policies</td>
+                                    <td class="oneringai-col">Allowlist, Blocklist, RateLimit, PathRestriction, BashFilter, SessionApproval, Role, UrlAllowlist</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                    <td>Path + filesystem policies</td>
+                                </tr>
+                                <tr>
+                                    <td>Rate limiting</td>
+                                    <td class="oneringai-col">Per-tool, per-user, per-session limits</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                </tr>
+                                <tr>
+                                    <td>Circuit breakers</td>
+                                    <td class="oneringai-col">Per-tool + per-provider (configurable thresholds)</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                </tr>
+                                <tr>
+                                    <td>Human-in-the-loop</td>
+                                    <td class="oneringai-col">Approval callbacks with session caching</td>
+                                    <td>interrupt() in LangGraph</td>
+                                    <td>@human_feedback decorator in Flow</td>
+                                    <td>Exec approval requests</td>
+                                </tr>
+                                <tr>
+                                    <td>Sandboxing</td>
+                                    <td class="oneringai-col">Not built-in</td>
+                                    <td>Deprecated &mdash; external containers only</td>
+                                    <td>Not built-in</td>
+                                    <td>Docker-based sandbox</td>
+                                </tr>
+                                <tr>
+                                    <td>Audit trail</td>
+                                    <td class="oneringai-col">Event-based: permission:allow, permission:deny, permission:audit</td>
+                                    <td>None</td>
+                                    <td>91 event types (observability, not security-specific)</td>
+                                    <td>Mutation tracking</td>
+                                </tr>
+                                <tr>
+                                    <td>Known CVEs</td>
+                                    <td class="oneringai-col">None reported</td>
+                                    <td>CVE-2025-68664/68665 (serialization injection, CVSS 8.6)</td>
+                                    <td>None reported</td>
+                                    <td>None reported</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="why-callout">
+                        <strong>Why OneRingAI wins:</strong> The most complete security model of any AI agent framework. 3-tier permission evaluation with 8 policy types, per-tool circuit breakers, rate limiting, bash filtering, and path restrictions &mdash; all built-in. LangChain and CrewAI have <strong>no built-in security whatsoever</strong>.
+                    </div>
+
+                    <!-- 5. Context Management -->
+                    <h3 class="h4 lg:h3 mt-6 mb-3">5. Context Management</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>OneRingAI</th>
+                                    <th>LangChain / LangGraph</th>
+                                    <th>CrewAI</th>
+                                    <th>OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Architecture</td>
-                                    <td class="oneringai-col">Plugin-first (AgentContextNextGen)</td>
-                                    <td>External packages</td>
-                                    <td>Basic memory (short/long-term)</td>
+                                    <td class="oneringai-col">Plugin-first (AgentContextNextGen) with 6 built-in plugins</td>
+                                    <td>Short-term (state) + Long-term (Store API) + Legacy (Buffer/Summary)</td>
+                                    <td>Unified Memory with scoped storage + Knowledge (RAG)</td>
+                                    <td>Plugin-based context engine</td>
                                 </tr>
                                 <tr>
                                     <td>Compaction</td>
-                                    <td class="oneringai-col">One-time before LLM call, tool pairs always removed together</td>
-                                    <td>Via LangGraph add-ons</td>
-                                    <td>No automatic compaction</td>
+                                    <td class="oneringai-col">Algorithmic (75% threshold), tool pairs always removed together, pluggable strategies</td>
+                                    <td>Message filtering / summarization</td>
+                                    <td>Auto-summarization when approaching token limits</td>
+                                    <td>Built-in compaction module</td>
                                 </tr>
                                 <tr>
                                     <td>Token budgeting</td>
-                                    <td class="oneringai-col">Detailed ContextBudget with per-plugin breakdown</td>
+                                    <td class="oneringai-col">Per-plugin token tracking with detailed ContextBudget breakdown</td>
                                     <td>No native budget API</td>
-                                    <td>No built-in</td>
+                                    <td>Context window management (85% safety ratio)</td>
+                                    <td>Provider-based</td>
                                 </tr>
                                 <tr>
                                     <td>Working Memory</td>
                                     <td class="oneringai-col">Tiered (raw/summary/findings), priority-based eviction, task-aware scoping</td>
                                     <td>External (Redis, vector DB)</td>
-                                    <td>Short-term + long-term (basic)</td>
+                                    <td>Unified Memory with composite scoring (recency + semantic + importance)</td>
+                                    <td>Plugin-based</td>
                                 </tr>
                                 <tr>
                                     <td>In-Context Memory</td>
-                                    <td class="oneringai-col">Data stored DIRECTLY in prompt &mdash; LLM sees values immediately</td>
-                                    <td>Not native</td>
+                                    <td class="oneringai-col">Data stored DIRECTLY in prompt &mdash; LLM sees values immediately, priority-based eviction</td>
+                                    <td>Not available</td>
+                                    <td>Not available</td>
                                     <td>Not available</td>
                                 </tr>
                                 <tr>
                                     <td>Persistent Instructions</td>
-                                    <td class="oneringai-col">KVP model, 50 entries, disk-persisted per agent</td>
+                                    <td class="oneringai-col">KVP model, disk-persisted per agent</td>
                                     <td>Not native</td>
+                                    <td>Not available</td>
                                     <td>Not available</td>
                                 </tr>
                                 <tr>
-                                    <td>Plugins</td>
-                                    <td class="oneringai-col">3 built-in + custom plugin API</td>
-                                    <td>Callbacks (limited)</td>
+                                    <td>Long-term memory</td>
+                                    <td class="oneringai-col">Via WorkingMemory + PersistentInstructions plugins</td>
+                                    <td>Store API (namespace-based, cross-session, semantic/episodic/procedural)</td>
+                                    <td>Deep recall with LLM analysis, vector search, composite scoring</td>
+                                    <td>Wiki + knowledge plugins</td>
+                                </tr>
+                                <tr>
+                                    <td>Context plugins</td>
+                                    <td class="oneringai-col">6 built-in + custom plugin API (IContextPluginNextGen)</td>
+                                    <td>No plugin system</td>
                                     <td>Not extensible</td>
+                                    <td>Extensible via plugins</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="why-callout">
-                        <strong>Why OneRingAI wins:</strong> Plugin-based context system is architecturally unique. InContextMemory puts frequently-accessed state directly in the prompt. Token budgeting gives exact per-plugin breakdowns.
+                        <strong>Why OneRingAI wins:</strong> Plugin-based context system is architecturally unique. InContextMemory puts frequently-accessed state directly in the prompt &mdash; no retrieval needed. Per-plugin token budgets give exact breakdowns. No other framework has this level of context control.
                     </div>
 
-                    <!-- 5. Tool System -->
-                    <h3 class="h4 lg:h3 mt-6 mb-3">5. Tool System</h3>
+                    <!-- 6. Tool System -->
+                    <h3 class="h4 lg:h3 mt-6 mb-3">6. Tool System</h3>
                     <div class="table-responsive">
                         <table class="table table-bordered comparison-table">
                             <thead>
@@ -313,54 +456,68 @@
                                     <th>OneRingAI</th>
                                     <th>LangChain / LangGraph</th>
                                     <th>CrewAI</th>
+                                    <th>OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Built-in tools</td>
-                                    <td class="oneringai-col">30+ (filesystem, shell, web, desktop, multimedia, code, JSON)</td>
-                                    <td>50+ via community packages</td>
-                                    <td>20+ via crewai-tools</td>
+                                    <td class="oneringai-col">60+ (18 categories: filesystem, shell, web, desktop, multimedia, code, JSON, connector&hellip;)</td>
+                                    <td>50+ via integrations</td>
+                                    <td>70+ via crewai-tools (search, scrape, docs, databases, vector DBs, media)</td>
+                                    <td>60 bundled + 5,400 on ClawHub</td>
                                 </tr>
                                 <tr>
                                     <td>Per-tool circuit breakers</td>
                                     <td class="oneringai-col">Yes &mdash; independent failure protection per tool</td>
                                     <td>No</td>
                                     <td>No</td>
+                                    <td>No</td>
                                 </tr>
                                 <tr>
                                     <td>Permission system</td>
-                                    <td class="oneringai-col">Allowlist/blocklist, approval caching (once/session/always/never), risk levels</td>
-                                    <td>Basic</td>
-                                    <td>Via Composio (external)</td>
+                                    <td class="oneringai-col">3-tier policy chain with 8 policies (allowlist, blocklist, rate, path, bash, session, role, URL)</td>
+                                    <td>No built-in</td>
+                                    <td>No built-in (guardrails are output validation, not permissions)</td>
+                                    <td>Exec approval pipeline</td>
                                 </tr>
                                 <tr>
                                     <td>Tool execution pipeline</td>
-                                    <td class="oneringai-col">Pluggable (logging, analytics, UI updates)</td>
-                                    <td>Callbacks</td>
-                                    <td>Not pluggable</td>
+                                    <td class="oneringai-col">Pluggable middleware (permission, logging, analytics, UI updates)</td>
+                                    <td>ToolNode handles parallel exec + errors in LangGraph</td>
+                                    <td>Hooks: @before_tool_call / @after_tool_call</td>
+                                    <td>Plugin hooks</td>
                                 </tr>
                                 <tr>
                                     <td>Desktop automation</td>
                                     <td class="oneringai-col">11 tools (screenshot, mouse, keyboard, window) with multimodal images</td>
                                     <td>Not built-in</td>
                                     <td>Not built-in</td>
+                                    <td>Not built-in</td>
                                 </tr>
                                 <tr>
-                                    <td>Document reader</td>
-                                    <td class="oneringai-col">9 formats (PDF, DOCX, XLSX, etc.) auto-integrated into read_file</td>
-                                    <td>Via third-party loaders</td>
-                                    <td>Basic file reading</td>
+                                    <td>Custom tools</td>
+                                    <td class="oneringai-col">Meta-tools: custom_tool_save, _load, _draft, _test (agent creates its own tools)</td>
+                                    <td>tool() function + Zod schema</td>
+                                    <td>BaseTool class or @tool decorator</td>
+                                    <td>Skills + plugins</td>
+                                </tr>
+                                <tr>
+                                    <td>Tool metrics</td>
+                                    <td class="oneringai-col">Usage count, latency, success rate per tool</td>
+                                    <td>Via LangSmith (paid SaaS)</td>
+                                    <td>Via AMP (paid SaaS)</td>
+                                    <td>None built-in</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="why-callout">
-                        <strong>Why OneRingAI wins:</strong> Per-tool circuit breakers mean one flaky API doesn't take down your agent. Desktop automation (computer use) is built-in.
+                        <strong>Why OneRingAI wins:</strong> Per-tool circuit breakers mean one flaky API doesn't take down your agent. Desktop automation (computer use) is built-in. Meta-tools let agents create their own tools at runtime. Built-in metrics without a paid SaaS dependency.
                     </div>
 
-                    <!-- 6. Multi-Modal Support -->
-                    <h3 class="h4 lg:h3 mt-6 mb-3">6. Multi-Modal Support</h3>
+                    <!-- 7. Multi-Agent Orchestration -->
+                    <h3 class="h4 lg:h3 mt-6 mb-3">7. Multi-Agent Orchestration</h3>
                     <div class="table-responsive">
                         <table class="table table-bordered comparison-table">
                             <thead>
@@ -369,6 +526,77 @@
                                     <th>OneRingAI</th>
                                     <th>LangChain / LangGraph</th>
                                     <th>CrewAI</th>
+                                    <th>OpenClaw</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Orchestration model</td>
+                                    <td class="oneringai-col">createOrchestrator() with 3 routing modes: DIRECT / DELEGATE / ORCHESTRATE</td>
+                                    <td>LangGraph: stateful graphs with conditional edges</td>
+                                    <td>Crew (sequential/hierarchical) + Flow (event-driven DAGs)</td>
+                                    <td>Subagent spawning + registry</td>
+                                </tr>
+                                <tr>
+                                    <td>Communication</td>
+                                    <td class="oneringai-col">SharedWorkspace (versioned, append-only log) + agent.inject()</td>
+                                    <td>State passing via graph edges with reducers</td>
+                                    <td>Task context chaining + Flow state</td>
+                                    <td>Session-based messages</td>
+                                </tr>
+                                <tr>
+                                    <td>Supervision modes</td>
+                                    <td class="oneringai-col">passive / active / event monitoring with reclaim conditions</td>
+                                    <td>Checkpointing + time-travel debugging</td>
+                                    <td>Manager agent in hierarchical mode</td>
+                                    <td>Subagent steering</td>
+                                </tr>
+                                <tr>
+                                    <td>Patterns</td>
+                                    <td class="oneringai-col">Routing-based (direct, delegated, orchestrated)</td>
+                                    <td>Supervisor, Swarm, Hierarchical, Pipeline</td>
+                                    <td>Sequential, Hierarchical (+ Consensual planned)</td>
+                                    <td>Flat subagent tree</td>
+                                </tr>
+                                <tr>
+                                    <td>Planning phase</td>
+                                    <td class="oneringai-col">UNDERSTAND &rarr; PLAN &rarr; APPROVE &rarr; EXECUTE &rarr; REPORT</td>
+                                    <td>Custom via graph design</td>
+                                    <td>Built-in planning=True on Agent</td>
+                                    <td>Not available</td>
+                                </tr>
+                                <tr>
+                                    <td>Async execution</td>
+                                    <td class="oneringai-col">assign_turn_async (non-blocking), assign_parallel</td>
+                                    <td>Deep Agents with background subagents</td>
+                                    <td>async_execution=True on tasks</td>
+                                    <td>Background processes</td>
+                                </tr>
+                                <tr>
+                                    <td>Cross-framework</td>
+                                    <td class="oneringai-col">Not yet</td>
+                                    <td>Not yet</td>
+                                    <td>A2A protocol (first-mover)</td>
+                                    <td>ACP (Agent Client Protocol)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="why-callout">
+                        <strong>Why OneRingAI wins:</strong> Most nuanced orchestration control with 3 routing modes, interactive delegation with monitoring, and a structured planning phase. SharedWorkspace gives agents a versioned bulletin board for coordination.
+                    </div>
+
+                    <!-- 8. Multi-Modal Support -->
+                    <h3 class="h4 lg:h3 mt-6 mb-3">8. Multi-Modal Support</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>OneRingAI</th>
+                                    <th>LangChain / LangGraph</th>
+                                    <th>CrewAI</th>
+                                    <th>OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -376,47 +604,46 @@
                                     <td>Image generation</td>
                                     <td class="oneringai-col">Built-in (DALL-E 3, gpt-image-1, Imagen 4, Grok Flux)</td>
                                     <td>Via community packages</td>
-                                    <td>Not native</td>
+                                    <td>DALL-E tool via crewai-tools</td>
+                                    <td>Via skills/extensions</td>
                                 </tr>
                                 <tr>
                                     <td>Video generation</td>
                                     <td class="oneringai-col">Built-in (Sora 2, Veo 3)</td>
                                     <td>Not native</td>
                                     <td>Not supported</td>
+                                    <td>Not built-in</td>
                                 </tr>
                                 <tr>
                                     <td>Text-to-Speech</td>
                                     <td class="oneringai-col">Built-in (5 models: OpenAI, Google)</td>
                                     <td>Not native</td>
                                     <td>Not supported</td>
+                                    <td>Via extensions</td>
                                 </tr>
                                 <tr>
                                     <td>Speech-to-Text</td>
                                     <td class="oneringai-col">Built-in (OpenAI Whisper, Google)</td>
                                     <td>Community packages</td>
                                     <td>Not supported</td>
+                                    <td>Via extensions</td>
                                 </tr>
                                 <tr>
-                                    <td>Image models registry</td>
-                                    <td class="oneringai-col">8 models with metadata</td>
-                                    <td>No registry</td>
-                                    <td>No registry</td>
-                                </tr>
-                                <tr>
-                                    <td>Video models registry</td>
-                                    <td class="oneringai-col">6 models with metadata</td>
-                                    <td>No registry</td>
-                                    <td>No registry</td>
+                                    <td>Model registries</td>
+                                    <td class="oneringai-col">8 image models + 6 video models with metadata</td>
+                                    <td>No registries</td>
+                                    <td>No registries</td>
+                                    <td>No registries</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="why-callout">
-                        <strong>Why OneRingAI wins:</strong> Full multimedia pipeline built into a single library.
+                        <strong>Why OneRingAI wins:</strong> Full multimedia pipeline built into a single library &mdash; text, images, video, TTS, and STT with typed model registries.
                     </div>
 
-                    <!-- 7. MCP (Model Context Protocol) -->
-                    <h3 class="h4 lg:h3 mt-6 mb-3">7. MCP (Model Context Protocol)</h3>
+                    <!-- 9. MCP (Model Context Protocol) -->
+                    <h3 class="h4 lg:h3 mt-6 mb-3">9. MCP (Model Context Protocol)</h3>
                     <div class="table-responsive">
                         <table class="table table-bordered comparison-table">
                             <thead>
@@ -425,36 +652,47 @@
                                     <th>OneRingAI</th>
                                     <th>LangChain / LangGraph</th>
                                     <th>CrewAI</th>
+                                    <th>OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>MCP support</td>
                                     <td class="oneringai-col">Native: stdio + HTTP/HTTPS, auto-reconnect, health checks, resource &amp; prompt support</td>
-                                    <td>Via adapter</td>
-                                    <td>Via Composio</td>
+                                    <td>@langchain/mcp-adapters v1.1.0 (stdio + Streamable HTTP + SSE)</td>
+                                    <td>Native: stdio + HTTP + SSE, retry with backoff, error classification</td>
+                                    <td>Via mcporter bridge</td>
                                 </tr>
                                 <tr>
                                     <td>Registry pattern</td>
                                     <td class="oneringai-col">MCPRegistry.create() / MCPRegistry.get() for managing multiple servers</td>
-                                    <td>Manual setup</td>
+                                    <td>MultiServerMCPClient (stateless by default)</td>
+                                    <td>MCPServerConfig on agent</td>
                                     <td>Not native</td>
                                 </tr>
                                 <tr>
                                     <td>Tool adaptation</td>
                                     <td class="oneringai-col">Auto-converts MCP tools to native ToolFunction format</td>
-                                    <td>Adapter required</td>
-                                    <td>Adapter required</td>
+                                    <td>Auto-converts to native LangChain tools</td>
+                                    <td>Auto-converts to BaseTool format</td>
+                                    <td>Bridge adapter</td>
+                                </tr>
+                                <tr>
+                                    <td>Health monitoring</td>
+                                    <td class="oneringai-col">Periodic ping, connect/disconnect/error events</td>
+                                    <td>Configurable reconnection</td>
+                                    <td>Retry with exponential backoff</td>
+                                    <td>Not built-in</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="why-callout">
-                        <strong>Why OneRingAI wins:</strong> First-class MCP integration with a registry pattern for managing multiple servers.
+                        <strong>Why OneRingAI wins:</strong> First-class MCP integration with a registry pattern, health monitoring, and auto-reconnect. All three developer frameworks now support MCP, but OneRingAI's registry pattern makes managing multiple servers straightforward.
                     </div>
 
-                    <!-- 8. Session Persistence -->
-                    <h3 class="h4 lg:h3 mt-6 mb-3">8. Session Persistence</h3>
+                    <!-- 10. Session Persistence & Storage -->
+                    <h3 class="h4 lg:h3 mt-6 mb-3">10. Session Persistence &amp; Storage</h3>
                     <div class="table-responsive">
                         <table class="table table-bordered comparison-table">
                             <thead>
@@ -463,39 +701,51 @@
                                     <th>OneRingAI</th>
                                     <th>LangChain / LangGraph</th>
                                     <th>CrewAI</th>
+                                    <th>OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Built-in persistence</td>
                                     <td class="oneringai-col">ctx.save() / ctx.load() &mdash; full conversation + all plugin states</td>
-                                    <td>Via checkpointers (LangGraph)</td>
-                                    <td>Short/long-term memory (basic)</td>
+                                    <td>Checkpointing with time-travel debugging</td>
+                                    <td>Flow persistence (SQLite)</td>
+                                    <td>Per-channel sessions</td>
                                 </tr>
                                 <tr>
                                     <td>What's persisted</td>
                                     <td class="oneringai-col">Conversation + WorkingMemory + InContextMemory + PersistentInstructions + system prompt</td>
-                                    <td>Graph state</td>
-                                    <td>Task context</td>
+                                    <td>Full graph state</td>
+                                    <td>Flow state (Pydantic typed)</td>
+                                    <td>Session state</td>
                                 </tr>
                                 <tr>
-                                    <td>Storage</td>
-                                    <td class="oneringai-col">File-based with atomic writes, fast index</td>
-                                    <td>Redis, SQLite, Postgres</td>
-                                    <td>Not configurable</td>
+                                    <td>Storage backends</td>
+                                    <td class="oneringai-col">StorageRegistry: file, in-memory, pluggable custom backends (15 implementations)</td>
+                                    <td>Postgres, SQLite, Redis, in-memory</td>
+                                    <td>SQLite (built-in), custom backends</td>
+                                    <td>Multiple backends</td>
+                                </tr>
+                                <tr>
+                                    <td>Multi-tenant storage</td>
+                                    <td class="oneringai-col">StorageContext (userId, tenantId, orgId) with factory pattern</td>
+                                    <td>Namespace-based Store</td>
+                                    <td>Scoped paths</td>
+                                    <td>Single-user</td>
                                 </tr>
                                 <tr>
                                     <td>Agent definitions</td>
-                                    <td class="oneringai-col">Agent.saveDefinition() / Agent.loadDefinition()</td>
+                                    <td class="oneringai-col">Agent.saveDefinition() / Agent.fromStorage()</td>
                                     <td>Not native</td>
-                                    <td>YAML-based</td>
+                                    <td>YAML-based config (@crew, @agent, @task decorators)</td>
+                                    <td>Not applicable</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- 9. Enterprise & Production Readiness -->
-                    <h3 class="h4 lg:h3 mt-6 mb-3">9. Enterprise &amp; Production Readiness</h3>
+                    <!-- 11. Enterprise & Production Readiness -->
+                    <h3 class="h4 lg:h3 mt-6 mb-3">11. Enterprise &amp; Production Readiness</h3>
                     <div class="table-responsive">
                         <table class="table table-bordered comparison-table">
                             <thead>
@@ -504,45 +754,58 @@
                                     <th>OneRingAI</th>
                                     <th>LangChain / LangGraph</th>
                                     <th>CrewAI</th>
+                                    <th>OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Resilience</td>
-                                    <td class="oneringai-col">Circuit breakers (per-connector + per-tool), retry w/ backoff, rate limiting</td>
-                                    <td>Basic retry</td>
-                                    <td>Basic retry via LiteLLM</td>
+                                    <td class="oneringai-col">Circuit breakers (per-connector + per-tool), retry w/ backoff + jitter, rate limiting</td>
+                                    <td>Basic retries via Runnable; no circuit breakers</td>
+                                    <td>Basic retry via LiteLLM; no circuit breakers</td>
+                                    <td>Provider failover</td>
                                 </tr>
                                 <tr>
                                     <td>Multi-tenant</td>
-                                    <td class="oneringai-col">userId scoping, connector allowlist, OAuth token isolation</td>
-                                    <td>Manual</td>
+                                    <td class="oneringai-col">userId scoping, connector allowlist, OAuth token isolation, StorageContext</td>
+                                    <td>Namespace-based (manual)</td>
                                     <td>Not supported</td>
+                                    <td>Single-user only</td>
                                 </tr>
                                 <tr>
                                     <td>Observability</td>
-                                    <td class="oneringai-col">Logger + Metrics + EventEmitter on all core classes</td>
+                                    <td class="oneringai-col">Logger + Metrics + EventEmitter on all core classes &mdash; no SaaS required</td>
                                     <td>LangSmith (paid SaaS)</td>
-                                    <td>CrewAI+ (paid SaaS)</td>
+                                    <td>91 event types + AMP tracing (paid SaaS, $99&ndash;$120K/yr)</td>
+                                    <td>Event bus</td>
                                 </tr>
                                 <tr>
                                     <td>API stability</td>
                                     <td class="oneringai-col">Semantic versioning, TypeScript strict mode</td>
-                                    <td>Frequent breaking changes</td>
-                                    <td>Relatively stable</td>
+                                    <td>Frequent breaking changes &mdash; teams report needing separate services per version</td>
+                                    <td>Memory system rewritten; some API churn</td>
+                                    <td>CalVer (daily releases)</td>
                                 </tr>
                                 <tr>
                                     <td>Lifecycle hooks</td>
-                                    <td class="oneringai-col">beforeToolExecution, afterToolExecution, beforeCompaction, onError</td>
-                                    <td>Callbacks (complex)</td>
-                                    <td>Not available</td>
+                                    <td class="oneringai-col">turn:start, tool:executed, iteration:complete, beforeCompaction, onError</td>
+                                    <td>Callbacks (complex middleware)</td>
+                                    <td>@before_llm_call, @after_llm_call, @before_tool_call, @after_tool_call</td>
+                                    <td>Plugin hooks</td>
+                                </tr>
+                                <tr>
+                                    <td>Tests</td>
+                                    <td class="oneringai-col">3,000+ unit tests</td>
+                                    <td>Vitest matchers (recently added)</td>
+                                    <td>Comprehensive pytest suite</td>
+                                    <td>Community testing</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- 10. Developer Experience -->
-                    <h3 class="h4 lg:h3 mt-6 mb-3">10. Developer Experience</h3>
+                    <!-- 12. Developer Experience -->
+                    <h3 class="h4 lg:h3 mt-6 mb-3">12. Developer Experience</h3>
                     <div class="table-responsive">
                         <table class="table table-bordered comparison-table">
                             <thead>
@@ -551,85 +814,125 @@
                                     <th>OneRingAI</th>
                                     <th>LangChain / LangGraph</th>
                                     <th>CrewAI</th>
+                                    <th>OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Type safety</td>
                                     <td class="oneringai-col">TypeScript strict, full type exports</td>
-                                    <td>Python type hints (inconsistent)</td>
-                                    <td>Python type hints</td>
+                                    <td>TypeScript with Zod schemas</td>
+                                    <td>Python type hints + Pydantic</td>
+                                    <td>TypeScript</td>
                                 </tr>
                                 <tr>
                                     <td>Minimal setup</td>
                                     <td class="oneringai-col">3 lines: Connector.create(), Agent.create(), agent.run()</td>
-                                    <td>Complex chain/graph setup</td>
-                                    <td>Agent/Task/Crew definition</td>
+                                    <td>Complex chain/graph setup &mdash; createAgent + tools + graph compile</td>
+                                    <td>Agent/Task/Crew definition with role/goal/backstory</td>
+                                    <td>Install + configure + run</td>
                                 </tr>
                                 <tr>
                                     <td>Direct LLM access</td>
                                     <td class="oneringai-col">runDirect() bypasses all context for quick queries</td>
-                                    <td>Not available</td>
-                                    <td>Not available</td>
+                                    <td>model.invoke() (separate from agent)</td>
+                                    <td>Not available as agent bypass</td>
+                                    <td>Not applicable</td>
                                 </tr>
                                 <tr>
                                     <td>Streaming</td>
                                     <td class="oneringai-col">13 typed event types with type guards + StreamState accumulator</td>
-                                    <td>Callback-based</td>
-                                    <td>Basic streaming</td>
+                                    <td>streamEvents() + streamLog()</td>
+                                    <td>LLMStreamChunkEvent emission</td>
+                                    <td>Provider-based streaming</td>
                                 </tr>
                                 <tr>
-                                    <td>Tests</td>
-                                    <td class="oneringai-col">2,285+ unit tests</td>
-                                    <td>Varies by package</td>
-                                    <td>Limited</td>
+                                    <td>Community</td>
+                                    <td class="oneringai-col">Growing</td>
+                                    <td>~17.5K stars, active development</td>
+                                    <td>~48.7K stars, DeepLearning.AI courses</td>
+                                    <td>~355K stars, massive ecosystem</td>
+                                </tr>
+                                <tr>
+                                    <td>Commercial</td>
+                                    <td class="oneringai-col">Open source (MIT)</td>
+                                    <td>LangSmith (paid SaaS)</td>
+                                    <td>AMP ($99&ndash;$120K/yr) with Studio, RBAC, deployment</td>
+                                    <td>Self-hosted (free, MIT)</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- 11. Summary: Why OneRingAI -->
-                    <h3 class="h4 lg:h3 mt-6 mb-3">11. Summary: Why OneRingAI</h3>
+                    <!-- 13. Summary: Why OneRingAI -->
+                    <h3 class="h4 lg:h3 mt-6 mb-3">13. Summary: Why OneRingAI</h3>
                     <div class="table-responsive">
                         <table class="table table-bordered comparison-table">
                             <thead>
                                 <tr>
                                     <th>Dimension</th>
                                     <th>OneRingAI Advantage</th>
+                                    <th>vs LangChain</th>
+                                    <th>vs CrewAI</th>
+                                    <th>vs OpenClaw</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Simplicity</td>
-                                    <td class="oneringai-col">1 library, 20 deps vs LangChain's ecosystem of 50+ packages</td>
+                                    <td>Auth</td>
+                                    <td class="oneringai-col">Only framework with connector-first architecture + built-in OAuth 2.0</td>
+                                    <td>No auth abstraction at all</td>
+                                    <td>No auth abstraction at all</td>
+                                    <td>Auth profiles but not programmatic</td>
                                 </tr>
                                 <tr>
-                                    <td>Auth</td>
-                                    <td class="oneringai-col">Only framework with connector-first architecture + built-in OAuth</td>
+                                    <td>Security</td>
+                                    <td class="oneringai-col">3-tier permission system with 8 policy types</td>
+                                    <td>No built-in security; CVE-2025-68664 (CVSS 8.6)</td>
+                                    <td>No OSS security; hallucination guardrail is a no-op upsell</td>
+                                    <td>Tool policy pipeline but single-user only</td>
                                 </tr>
                                 <tr>
                                     <td>Resilience</td>
-                                    <td class="oneringai-col">Only framework with per-tool circuit breakers</td>
+                                    <td class="oneringai-col">Only framework with per-tool circuit breakers + rate limiting</td>
+                                    <td>No circuit breakers, no rate limiting</td>
+                                    <td>No circuit breakers, no rate limiting</td>
+                                    <td>No circuit breakers</td>
                                 </tr>
                                 <tr>
                                     <td>Context</td>
-                                    <td class="oneringai-col">Only framework with plugin-based context + InContextMemory + token budgeting</td>
+                                    <td class="oneringai-col">Only framework with plugin-based context + InContextMemory + per-plugin token budgets</td>
+                                    <td>Split memory systems (legacy vs Store API)</td>
+                                    <td>Good unified Memory but no plugin system</td>
+                                    <td>Plugin-based but not developer-accessible</td>
                                 </tr>
                                 <tr>
                                     <td>Multi-modal</td>
                                     <td class="oneringai-col">Only single library covering text + image + video + TTS + STT</td>
+                                    <td>Requires community packages</td>
+                                    <td>Minimal multimedia support</td>
+                                    <td>Via extensions only</td>
                                 </tr>
                                 <tr>
                                     <td>Desktop</td>
-                                    <td class="oneringai-col">Built-in computer use &mdash; neither competitor offers this</td>
+                                    <td class="oneringai-col">Built-in computer use (11 desktop automation tools)</td>
+                                    <td>Not built-in</td>
+                                    <td>Not built-in</td>
+                                    <td>Not built-in</td>
                                 </tr>
                                 <tr>
                                     <td>TypeScript</td>
-                                    <td class="oneringai-col">Full type safety vs Python's optional typing</td>
+                                    <td class="oneringai-col">Full strict mode type safety with typed model registries</td>
+                                    <td>TypeScript but heavy abstraction layers</td>
+                                    <td>Python-only &mdash; no TypeScript support</td>
+                                    <td>TypeScript but not a developer SDK</td>
                                 </tr>
                                 <tr>
                                     <td>Enterprise</td>
-                                    <td class="oneringai-col">Multi-tenant isolation, permission system, lifecycle hooks &mdash; all built-in</td>
+                                    <td class="oneringai-col">Multi-tenant isolation, permission system, lifecycle hooks &mdash; all built-in, no paid SaaS</td>
+                                    <td>Observability requires paid LangSmith</td>
+                                    <td>Key features gated behind paid AMP ($99&ndash;$120K/yr)</td>
+                                    <td>Single-user only</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -637,7 +940,7 @@
 
                     <!-- Closing -->
                     <div class="why-callout mt-4 mb-6">
-                        <p class="fs-6 mb-0">OneRingAI is what you'd build if you started fresh in 2025, knowing everything wrong with LangChain's abstraction maze and CrewAI's Python-only limitations &mdash; a single TypeScript library with auth, resilience, multi-modal, and context management built in from day one.</p>
+                        <p class="fs-6 mb-0">OneRingAI is what you'd build if you started fresh in 2025, knowing everything wrong with LangChain's abstraction maze, CrewAI's Python-only limitations, and the security gaps across the entire ecosystem &mdash; a single TypeScript library with auth, security, resilience, multi-modal, and context management built in from day one. No paid SaaS required.</p>
                     </div>
 
                 </div>
