@@ -1,11 +1,15 @@
 node_modules/
 dist/
 .DS_Store
+.preview-*.log
+content/library/
+.library-source/
+# Existing local material and retired-tool caches remain private/ignored.
+launch-posts.md
+promotion-plan.md
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
 .bundle/
 vendor/
 Gemfile.lock
-launch-posts.md
-promotion-plan.md

@@ -1,0 +1,338 @@
+<main id="main">
+  <section class="hero container">
+    <div class="hero-copy">
+      <a class="release-note" href="{{doc:CHANGELOG.md}}"
+        ><span class="status-dot"></span> V2 BETA IS HERE
+        <span aria-hidden="true">→</span></a
+      >
+      <h1>
+        Your agents.<br />Your infrastructure.<br /><span>Your choice.</span>
+      </h1>
+      <p class="hero-lead">
+        A TypeScript foundation for agents that do real work. Connect your
+        systems, build lasting memory, and choose the harness that runs it all.
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="docs/start/"
+          >Build your first agent <span aria-hidden="true">→</span></a
+        ><a class="text-link" href="docs/"
+          >Explore the docs <span aria-hidden="true">↗</span></a
+        >
+      </div>
+      <button
+        class="install-command"
+        data-copy="npm install oneringai"
+        aria-label="Copy npm install oneringai"
+      >
+        <span class="prompt">$</span><code>npm install oneringai</code
+        ><span class="copy-glyph" aria-hidden="true">⧉</span>
+      </button>
+      <p class="hero-meta">
+        Open source · MIT · Node.js 22.13+ or 24+<br /><span
+          >Published as {{version}}. External harnesses are preview.</span
+        >
+      </p>
+    </div>
+    <div class="harness-lab">
+      <div class="lab-title">
+        <span class="tiny-label">ONE DEFINITION. YOUR EXECUTION.</span
+        ><span class="lab-symbol">↗</span>
+      </div>
+      <div class="runtime-map" aria-hidden="true">
+        <div class="map-top">
+          <span>your application</span><span class="map-wire"></span
+          ><span class="map-agent">{{mark}}<span>agent definition</span></span>
+        </div>
+        <div class="map-spine"></div>
+        <div class="map-nodes">
+          <span class="map-node selected">OneRingAI</span
+          ><span class="map-node">OpenAI</span
+          ><span class="map-node">Anthropic</span>
+        </div>
+      </div>
+      <div class="lab-body">
+        <div
+          class="lab-picker"
+          role="group"
+          aria-label="Choose an execution example"
+        >
+          <button
+            class="selected"
+            data-harness="oneringai.agent"
+            aria-pressed="true"
+          >
+            OneRingAI</button
+          ><button data-harness="openai.codex.sdk" aria-pressed="false">
+            Codex SDK</button
+          ><button data-harness="anthropic.agent.sdk" aria-pressed="false">
+            Claude SDK</button
+          ><button data-harness="openai.agents.api" aria-pressed="false">
+            OpenAI managed</button
+          ><button data-harness="anthropic.managed.api" aria-pressed="false">
+            Claude managed
+          </button>
+        </div>
+        <div class="code-caption">
+          <span>session.ts</span
+          ><span class="harness-status">Native harness</span>
+        </div>
+        <pre
+          class="hero-code"
+        ><code id="harness-code">{{runtime-code}}</code></pre>
+        <div class="lab-bottom">
+          <span
+            ><span class="status-dot"></span>
+            <span id="binding-label">Your host. Your agent loop.</span></span
+          ><a href="{{doc:USER_GUIDE.md#agent-runtime-preview}}"
+            >Runtime guide ↗</a
+          >
+        </div>
+      </div>
+      <p class="lab-disclaimer">
+        Session-binding illustration. A configured host, connector, and policy
+        are required. No requests are made here.
+      </p>
+    </div>
+  </section>
+  <div class="foundation-strip">
+    <div class="container foundation-inner">
+      <span>ONE COHERENT FOUNDATION</span>
+      <div>
+        Models <i>/</i> Connectors <i>/</i> Tools <i>/</i> Context
+        <i>/</i> Memory <i>/</i> Harnesses
+      </div>
+    </div>
+  </div>
+  <section class="section container" id="version-2">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">WHAT CHANGES IN V2</p>
+        <h2>More control over<br />the work between calls.</h2>
+      </div>
+      <p>
+        An agent is more than a model request. V2 makes long tasks, source
+        retention, execution, and model spending easier to inspect and control.
+      </p>
+    </div>
+    <div class="feature-grid">
+      <a class="feature" href="{{doc:USER_GUIDE.md#agent-runtime-preview}}"
+        ><span class="feature-index">01 / EXECUTION</span>
+        <h3>Choose a whole harness.</h3>
+        <p>
+          Define the assistant once. Bind native OneRingAI, local Codex or
+          Claude SDKs, or managed vendor agents per session.
+        </p>
+        <span class="feature-foot"
+          >External harnesses · preview <span>↗</span></span
+        ></a
+      ><a class="feature" href="{{doc:docs/DURABLE_EVIDENCE.md}}"
+        ><span class="feature-index">02 / CONTINUITY</span>
+        <h3>Keep the source.</h3>
+        <p>
+          Retain scoped observations as evidence while the model sees bounded
+          projections. Repair storage without repeating an action.
+        </p>
+        <span class="feature-foot">Durable evidence <span>↗</span></span></a
+      ><a class="feature" href="{{doc:docs/TASK_STATE.md}}"
+        ><span class="feature-index">03 / TASK STATE</span>
+        <h3>Hold on to what matters.</h3>
+        <p>
+          Keep host-confirmed constraints, corrections, and action receipts
+          through compaction. Verify completion separately.
+        </p>
+        <span class="feature-foot">Protected task state <span>↗</span></span></a
+      ><a class="feature" href="{{doc:docs/MODEL_TASKS_AND_HELPERS.md}}"
+        ><span class="feature-index">04 / MODEL CONTROL</span>
+        <h3>Give every call a budget.</h3>
+        <p>
+          Use explicit helper models and share call, token, deadline, and
+          estimated cost limits through a process-local ModelTask.
+        </p>
+        <span class="feature-foot"
+          >Helpers, routing & budgets <span>↗</span></span
+        ></a
+      >
+    </div>
+    <div class="section-link">
+      <span
+        >New features are opt-in where documented. Existing Agent defaults
+        remain supported.</span
+      ><a class="text-link" href="{{doc:docs/VERSION_2_GUIDE.md}}"
+        >The complete v2 guide ↗</a
+      >
+    </div>
+  </section>
+  <section class="foundation-section">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">BUILT ON A STRONG FOUNDATION</p>
+          <h2>The useful parts.<br />Already connected.</h2>
+        </div>
+        <p>
+          V2 builds on the library's existing connectors, knowledge memory,
+          tools, and media APIs. Adopt the pieces your application needs.
+        </p>
+      </div>
+      <div class="foundation-columns">
+        <div class="foundation-item">
+          <span class="outline-icon">↔</span>
+          <h3>Your systems, authenticated.</h3>
+          <p>
+            Named connectors for model providers and external services. Multiple
+            accounts, OAuth, and host-controlled access in one shared registry.
+          </p>
+          <div class="service-tags">
+            <span>GitHub</span><span>Slack</span><span>Google Workspace</span
+            ><span>Microsoft</span><span>MCP</span>
+          </div>
+          <p class="small-text">
+            50 authentication templates. Generic API access and specialized
+            tools for selected services.
+          </p>
+          <a class="text-link" href="{{doc:docs/CONNECTOR_TOOL_CATALOG.md}}"
+            >Explore connectors ↗</a
+          >
+        </div>
+        <div class="foundation-item">
+          <span class="outline-icon">⌘</span>
+          <h3>Memory with relationships.</h3>
+          <p>
+            Entities, facts, provenance, and temporal knowledge. Graph traversal
+            and ranked retrieval, with permission-aware agent integration.
+          </p>
+          <div class="memory-sketch" aria-hidden="true">
+            <span>Alice</span><i>works on</i><span>Launch</span><i>part of</i
+            ><span>Acme</span>
+          </div>
+          <p class="small-text">
+            A standalone knowledge system. Use it directly or through six read
+            and six write tools.
+          </p>
+          <a class="text-link" href="{{doc:docs/MEMORY_GUIDE.md}}"
+            >Understand the memory model ↗</a
+          >
+        </div>
+        <div class="foundation-item">
+          <span class="outline-icon">⌁</span>
+          <h3>Beyond text.</h3>
+          <p>
+            Streaming, documents, images, video, speech, embeddings, and
+            realtime voice through dedicated high-level APIs.
+          </p>
+          <div class="modality-list">
+            <span>TEXT</span><span>IMAGE</span><span>AUDIO</span
+            ><span>VIDEO</span>
+          </div>
+          <p class="small-text">
+            Model registries expose lifecycle and capability metadata. Provider
+            and endpoint boundaries apply.
+          </p>
+          <a class="text-link" href="{{doc:API_REFERENCE.md#image-generation}}"
+            >Find the right capability ↗</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section container">
+    <div class="applications-heading">
+      <div>
+        <p class="eyebrow">REAL APPLICATIONS. OPEN SOURCE.</p>
+        <h2>Read it. Run it. Make it yours.</h2>
+      </div>
+      <a class="text-link" href="applications/">Explore the applications ↗</a>
+    </div>
+    <div class="app-grid">
+      <a class="app-panel amos" href="{{doc:apps/amos/docs/AGENT_RUNTIME.md}}"
+        ><div class="app-header">
+          <span class="app-name">amos<span class="cursor">_</span></span
+          ><span class="pill">TERMINAL</span>
+        </div>
+        <h3>A complete agent host,<br />right in your terminal.</h3>
+        <p>
+          Configure connectors, switch harnesses, inspect runs, and recover
+          saved sessions. The cookbook walks through the full runtime.
+        </p>
+        <div class="terminal-preview" aria-label="Illustrative AMOS commands">
+          <span class="terminal-dots">● ● ●</span>
+          <div><b>›</b> /inspect</div>
+          <div class="terminal-muted">Capabilities · policy · recovery</div>
+          <div><b>›</b> /status</div>
+          <div class="terminal-muted">Inspect the current session</div>
+        </div>
+        <span class="app-cta">Open the AMOS cookbook <span>↗</span></span></a
+      ><a class="app-panel hosea" href="{{doc:apps/hosea/README.md}}"
+        ><div class="app-header">
+          <span class="app-name">hosea</span><span class="pill">DESKTOP</span>
+        </div>
+        <h3>A calmer workspace<br />for your agents.</h3>
+        <p>
+          An Electron app for conversations, models, tools, and media. Explore
+          the new design in an isolated preview without an API key.
+        </p>
+        <div class="desktop-preview" aria-hidden="true">
+          <div class="desktop-sidebar">
+            <span class="mini-mark">◯</span><span>Chat</span
+            ><span>Connections</span><span>Agents</span>
+          </div>
+          <div class="desktop-content">
+            <span class="preview-greeting">What are we working on?</span
+            ><span class="preview-input">Start a conversation <b>↑</b></span>
+          </div>
+        </div>
+        <span class="app-cta">Run the design preview <span>↗</span></span></a
+      >
+    </div>
+  </section>
+  <section class="comparison-band">
+    <div class="container comparison-inner">
+      <div>
+        <p class="eyebrow">A FRAMEWORK IS A CHOICE</p>
+        <h2>Find your fit.</h2>
+        <p>
+          Compare OneRingAI with LangGraph, Mastra, AI SDK, vendor SDKs, CrewAI,
+          and OpenClaw. Current sources. Concrete tradeoffs.
+        </p>
+      </div>
+      <a class="button secondary" href="compare/"
+        >Read the comparison <span>↗</span></a
+      >
+    </div>
+  </section>
+  <section class="section container docs-entry">
+    <p class="eyebrow">START WITH SOMETHING CONCRETE</p>
+    <h2>From the first call<br />to the whole system.</h2>
+    <div class="resource-grid">
+      <a href="docs/start/"
+        ><span>01</span>
+        <h3>Quickstart</h3>
+        <p>Install, connect, run.</p>
+        <b>→</b></a
+      ><a href="{{doc:examples/README.md}}"
+        ><span>02</span>
+        <h3>Runnable examples</h3>
+        <p>Offline demos and opt-in live recipes.</p>
+        <b>→</b></a
+      ><a href="{{doc:apps/amos/docs/AGENT_RUNTIME.md}}"
+        ><span>03</span>
+        <h3>AMOS cookbook</h3>
+        <p>The complete harness-host walkthrough.</p>
+        <b>→</b></a
+      ><a href="{{doc:docs/PACKAGE_MIGRATION.md}}"
+        ><span>04</span>
+        <h3>Coming from v1?</h3>
+        <p>Move to the unscoped v2 package.</p>
+        <b>→</b></a
+      >
+    </div>
+  </section>
+  <section class="closing container">
+    <div>
+      {{mark}}
+      <h2>Build around your application.</h2>
+      <p>Keep your credentials, your tools, and your choice of execution.</p>
+    </div>
+    <a class="button primary" href="docs/start/">Get started <span>→</span></a>
+  </section>
+</main>
