@@ -65,4 +65,19 @@ GitHub Actions checks pull requests. A push to `main` checks and deploys to the 
 
 A deployment does not publish an npm version, change v1 maintenance, or distribute desktop installers.
 
+## Social previews
+
+Every rendered page includes explicit Open Graph and X card titles, descriptions,
+image URLs, and image alt text. The 1200×630 PNG is copied to a content-hashed
+filename during the build, so changing the image also changes its public URL.
+Keep `social.svg` and `social.png` in sync; `npm run check` validates the generated
+metadata and image contract across all rendered pages.
+
+Social platforms cache page metadata separately from the deployed site. If a new
+post still shows the old site, remove its preview and link, then paste a fresh
+URL such as `https://oneringai.io/?v=2`. This serves the same homepage with the
+same canonical URL. A fresh URL can trigger a new crawl; the website cannot purge
+X's cache or guarantee when existing cards refresh. Verify the title and image
+in the composer before publishing.
+
 MIT © 2025–2026 Anton Antic · anton.antich@gmail.com

@@ -59,3 +59,17 @@ and all five harness bindings. A 320px homepage overflow found during QA was
 fixed without reducing reading text. These checks verify the static site and
 illustrative code; they do not execute vendor integrations or prove Analytics
 dashboard ingestion.
+
+## Social preview follow-up — 2026-11-02
+
+The reported X draft showed the old site's exact title and screenshot. A live
+Twitterbot request received the current homepage and 1200×630 PNG with HTTP 200;
+robots.txt allows both. This supports a stale platform card-cache diagnosis.
+The shared shell now emits explicit X metadata matching Open Graph, including
+the title, description, image, and alt text. Open Graph includes the canonical
+page URL, site name, and image dimensions/type. The build gives social images a
+content-hashed URL so image changes cannot reuse a previous image URL. The
+generated-artifact checks cover every rendered page and the actual PNG bytes.
+All ten website checks pass with zero reference warnings.
+Refreshing an existing X card remains controlled by X; no post is published by
+these checks.

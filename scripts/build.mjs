@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir, readdir, rm, cp } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import MarkdownIt from "markdown-it";
 import GithubSlugger from "github-slugger";
 import hljs from "highlight.js";
@@ -364,6 +365,7 @@ async function emit(page, title, html, opts = {}) {
     description: opts.description || `${title} — OneRingAI v2 documentation.`,
     content: html,
     metadata,
+    socialImage: `https://oneringai.io/${socialImagePath}`,
     ...opts,
   });
   await mkdir(path.dirname(path.join(out, page)), { recursive: true });
@@ -375,6 +377,13 @@ await mkdir(out, { recursive: true });
 await cp(path.join(root, "src/assets"), path.join(out, "assets"), {
   recursive: true,
 });
+// Social crawlers cache images independently of the page. New image bytes
+// receive a new URL, even when the editable source filename stays the same.
+const socialImageData = await readFile(
+  path.join(root, "src/assets/social.png"),
+);
+const socialImagePath = `assets/social-${createHash("sha256").update(socialImageData).digest("hex").slice(0, 12)}.png`;
+await writeFile(path.join(out, socialImagePath), socialImageData);
 // Original Markdown and referenced source are downloadable, keeping links local and branch independent.
 await cp(lib, path.join(out, "raw"), { recursive: true });
 for (const d of docs.values())

@@ -4,6 +4,7 @@ import { runInNewContext } from "node:vm";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import { parseHTML } from "linkedom";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
@@ -20,6 +21,7 @@ const known = new Set(files);
 const pages = new Map();
 const semantics = [];
 const analyticsCoverage = [];
+const socialCards = [];
 for (const p of files.filter(
   (p) => p.endsWith(".html") && !p.includes("/raw/"),
 )) {
@@ -31,6 +33,24 @@ for (const p of files.filter(
   ].map((el) => el.getAttribute("href") ?? el.getAttribute("src"));
   pages.set(p, { ids: new Set(ids), refs });
   if (!document.querySelector('meta[http-equiv="refresh"]')) {
+    socialCards.push({
+      page: p,
+      title: document.title,
+      description: document
+        .querySelector('meta[name="description"]')
+        ?.getAttribute("content"),
+      canonical: document
+        .querySelector('link[rel="canonical"]')
+        ?.getAttribute("href"),
+      tags: [
+        ...document.querySelectorAll(
+          'meta[property^="og:"], meta[name^="twitter:"]',
+        ),
+      ].map((el) => [
+        el.getAttribute("property") || el.getAttribute("name"),
+        el.getAttribute("content"),
+      ]),
+    });
     analyticsCoverage.push({
       page: p,
       count: document.querySelectorAll('script[src$="assets/analytics.js"]')
@@ -126,6 +146,45 @@ test("homepage presents v2 beta, correct package, cookbook, and five harness exa
 });
 test("all non-redirect pages have accessible semantic shells and descriptive metadata", () =>
   assert.deepEqual(semantics, []));
+test("share cards have explicit matching X/Open Graph metadata and a versioned PNG", async () => {
+  const images = new Set();
+  for (const card of socialCards) {
+    const get = (key) => {
+      const tags = card.tags.filter(([name]) => name === key);
+      assert.equal(tags.length, 1, `${card.page}: ${key}`);
+      assert(tags[0][1], `${card.page}: empty ${key}`);
+      return tags[0][1];
+    };
+    assert.equal(get("og:title"), card.title);
+    assert.equal(get("twitter:title"), card.title);
+    assert.equal(get("og:description"), card.description);
+    assert.equal(get("twitter:description"), card.description);
+    assert.equal(get("og:url"), card.canonical);
+    assert.equal(get("og:site_name"), "OneRingAI");
+    assert.equal(get("twitter:card"), "summary_large_image");
+    assert.equal(get("og:image:type"), "image/png");
+    assert.equal(get("og:image:width"), "1200");
+    assert.equal(get("og:image:height"), "630");
+    assert.equal(get("og:image:alt"), get("twitter:image:alt"));
+    const url = new URL(get("og:image"));
+    assert.equal(get("twitter:image"), url.href);
+    assert.equal(url.origin, "https://oneringai.io");
+    assert.match(url.pathname, /^\/assets\/social-[a-f0-9]{12}\.png$/);
+    images.add(url.pathname);
+  }
+  for (const pathname of images) {
+    const data = await readFile(path.join(dist, pathname));
+    assert.equal(data.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
+    assert.equal(data.readUInt32BE(16), 1200);
+    assert.equal(data.readUInt32BE(20), 630);
+    assert(data.length < 5 * 1024 * 1024);
+    assert(
+      pathname.includes(
+        createHash("sha256").update(data).digest("hex").slice(0, 12),
+      ),
+    );
+  }
+});
 test("snapshot references, static hosting and machine-readable documentation are ready", async () => {
   const report = await json("build-report.json");
   assert.deepEqual(report.warnings, []);
