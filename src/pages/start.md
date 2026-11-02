@@ -1,20 +1,20 @@
-# A first agent. Then your application.
+# Quickstart
 
-Install the published **v2 beta**, configure a named connector, and run a managed agent. You can add tools, memory, and execution controls as your application needs them.
+Install the v2 beta, register a connector, and run an agent.
 
 ## Install
 
-Use Node.js **22.13+ or 24+**. ESM, CommonJS, and TypeScript declarations are included.
+Requires Node.js **22.13+ or 24+**. ESM, CommonJS, and TypeScript declarations are included.
 
 ```bash
 npm install oneringai
 ```
 
-The package is **`oneringai@2.0.0-beta.1`**, without a scope. Both `latest` and `next` currently select this beta. Pin the version for reproducible deployments. This is not a stable 2.0.0 release.
+Published version: **`oneringai@2.0.0-beta.1`**. Both `latest` and `next` select this beta. Pin the version for reproducible installs.
 
-## Configure and run
+## Run an agent
 
-Set `OPENAI_API_KEY` in your environment. Load your application's environment configuration before this code; the library does not load `.env` automatically. Model requests use the provider's billing.
+Set `OPENAI_API_KEY` in your environment. Load `.env` in your application if needed; OneRingAI does not load it automatically. Calls use your provider account.
 
 ```typescript
 import { Agent, Connector, Vendor } from "oneringai";
@@ -39,18 +39,19 @@ try {
 }
 ```
 
-This is TypeScript: run it with your normal TypeScript toolchain. Replace the connector and model to use another supported provider; capability and endpoint constraints still apply.
+Run with your TypeScript toolchain. To switch providers, register another connector and change `connector` and `model`. Supported capabilities vary by model and endpoint.
 
-## Pick your next step
+## Add capabilities
 
-- **Connect business systems:** use a named service connector and [connector tools](library/docs/CONNECTOR_TOOL_CATALOG.md).
-- **Remember more than a conversation:** explore the [entity/fact memory system](library/docs/MEMORY_GUIDE.md).
-- **Control long tasks:** start with [v2 adoption guidance](library/docs/VERSION_2_GUIDE.md), [evidence](library/docs/DURABLE_EVIDENCE.md), and [helper budgets](library/docs/MODEL_TASKS_AND_HELPERS.md).
-- **Switch whole harnesses:** read the [runtime chapter](library/USER_GUIDE.md#agent-runtime-preview) and run the [AMOS cookbook](library/apps/amos/docs/AGENT_RUNTIME.md).
-- **Try without provider calls:** the [examples index](library/examples/README.md) identifies deterministic offline examples and separately opt-in live modes.
+- [Connectors and tools](library/docs/CONNECTOR_TOOL_CATALOG.md): authenticated external APIs.
+- [Memory](library/docs/MEMORY_GUIDE.md): entities, facts, relationships, and retrieval.
+- [V2 controls](library/docs/VERSION_2_GUIDE.md): evidence, task state, model budgets, and recovery.
+- [Agent runtime](library/USER_GUIDE.md#agent-runtime-preview): switch complete harnesses. External drivers are preview.
+- [AMOS cookbook](library/apps/amos/docs/AGENT_RUNTIME.md): configure a host and test all five drivers.
+- [Examples](library/examples/README.md): offline demonstrations and opt-in live runs.
 
-## Upgrading from v1
+## Upgrade from v1
 
-V1's `@everworker/oneringai` and v2's `oneringai` are different npm packages. Upgrading requires changing the dependency and imports, checking optional SDK peers, and reviewing enabled features. Existing `Agent.create()` defaults remain supported wherever documented. Most new policies are opt-in.
+Replace `@everworker/oneringai` with `oneringai` and update imports. Review optional SDK dependencies and enabled features. Existing `Agent.create()` defaults remain supported where documented.
 
-[Follow the package migration guide](library/docs/PACKAGE_MIGRATION.md) · [Read the v2 release notes](library/CHANGELOG.md#200-beta1--2026-11-02)
+[Migration guide](library/docs/PACKAGE_MIGRATION.md) · [V2 release notes](library/CHANGELOG.md#200-beta1--2026-11-02)

@@ -1,33 +1,34 @@
-# See the library at work.
+# AMOS and hosea
 
-Two open-source applications show how OneRingAI fits into a useful product. Both are MIT licensed and live alongside the library. They are source applications; the library's npm publication does not imply a signed desktop release or complete live validation of every runtime.
+MIT-licensed terminal and desktop apps built with OneRingAI. Run both from source; v2 desktop installers have not been published.
 
-## AMOS — your terminal agent
+## AMOS: terminal agent
 
-AMOS combines named connectors, tools, permissions, context, and saved sessions in a terminal application. Native mode exposes OneRingAI's context, routing, helpers, presets, task state, and evidence controls. Runtime mode hosts the same logical assistant through different harness bindings.
+Configure connectors, tools, permissions, and saved sessions. Native mode exposes context, routing, helpers, task state, and evidence controls. Runtime mode supports five harness bindings; external drivers remain preview.
 
-**Start with the [AMOS runtime cookbook](library/apps/amos/docs/AGENT_RUNTIME.md).** It includes a ready-to-run offline host, exact setup, five driver profiles, activity inspection, files, recovery, and explicitly opt-in live execution.
+The **[AMOS runtime cookbook](library/apps/amos/docs/AGENT_RUNTIME.md)** covers an offline host, setup, commands, files, recovery, and opt-in live runs.
 
 ```bash
-# In a OneRingAI source checkout
+# From the OneRingAI repository root
 npm install
 npm run build
+npm install --prefix apps/amos
 npm run --prefix apps/amos build
 npm run --prefix apps/amos start
 ```
 
-Configure a connector in AMOS before making real model calls. Runtime mode has additional setup, optional SDK peers, host configuration, and platform constraints documented in the cookbook.
+Configure a connector before making model calls. Runtime mode requires the host setup and optional SDK dependencies described in the cookbook.
 
-[AMOS application guide](library/apps/amos/README.md) · [Complete AMOS user guide](library/apps/amos/docs/USER_GUIDE.md)
+[AMOS setup](library/apps/amos/README.md) · [AMOS user guide](library/apps/amos/docs/USER_GUIDE.md)
 
-## hosea — a desktop workspace
+## hosea: desktop workspace
 
-hosea is the Electron application for conversations, agents, model connections, tools, and media. Its monochrome design system supports light, dark, and system themes with adjustable text size. The interface lives in the app itself.
+An Electron app for conversations, models, tools, and media. Supports light, dark, and system themes, plus adjustable text size.
 
-You can explore its isolated design preview without an API key:
+Run the isolated UI preview without an API key:
 
 ```bash
-# In a OneRingAI source checkout
+# From the OneRingAI repository root
 npm install
 npm run build
 cd apps/hosea
@@ -35,10 +36,10 @@ npm install
 npm run design
 ```
 
-The preview uses isolated data and does not make model calls by itself. Calls you initiate use the provider and billing you configure. Optional backend auth/proxy infrastructure is preserved and disabled by default for future integration. New installers have not been published as part of this redesign.
+The preview uses separate data and makes no model calls by itself. Calls you initiate use your configured provider. Optional backend authentication and proxying are retained and disabled by default.
 
-[hosea setup and application guide](library/apps/hosea/README.md) · [Design system](library/apps/hosea/docs/DESIGN_SYSTEM.md)
+[hosea setup](library/apps/hosea/README.md) · [Design system](library/apps/hosea/docs/DESIGN_SYSTEM.md)
 
-## Build your own
+## Library integration
 
-Applications use public APIs and host-owned credentials and authorization. Start with the [quickstart](start.md), choose a [runnable example](library/examples/README.md), or browse the [complete user guide](library/USER_GUIDE.md).
+[Quickstart](start.md) · [Examples](library/examples/README.md) · [User guide](library/USER_GUIDE.md)

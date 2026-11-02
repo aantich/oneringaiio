@@ -10,3 +10,4 @@ Read [README.md](README.md) before modifying this site.
 - Comparison claims need current official sources, a review date, and clear scope. Give alternatives credit; do not infer unsupported capabilities from missing docs or claim unmeasured performance advantages.
 - Run `npm run check`, then inspect representative desktop/mobile pages in a real browser. Never use API keys or billable model calls to test this static site.
 - Preserve the existing custom domain and GitHub Pages deployment. No new hosting accounts or paid services are needed.
+- Preserve Google Analytics property `G-0DH6CTK91N` through the shared page shell. Load it once on the production domain; keep local previews untracked. Run the Analytics regression checks when changing scripts or templates.

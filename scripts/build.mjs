@@ -361,9 +361,7 @@ async function emit(page, title, html, opts = {}) {
   const full = layout({
     page,
     title,
-    description:
-      opts.description ||
-      `${title}. OneRingAI v2 TypeScript agents, connectors, tools, context, and memory.`,
+    description: opts.description || `${title} — OneRingAI v2 documentation.`,
     content: html,
     metadata,
     ...opts,
@@ -488,18 +486,18 @@ for (const [file, page] of [
 const docPage = "docs/index.html";
 const groups = [
   [
-    "Start building",
+    "Get started",
     [
       ["Quickstart", "@start", "Install the beta and run a first agent."],
       [
         "User guide",
         "USER_GUIDE.md",
-        "The complete guide, organized into chapters.",
+        "Agent setup, tools, context, and persistence.",
       ],
       [
         "API reference",
         "API_REFERENCE.md",
-        "Public signatures, types, and contracts.",
+        "Public types and method signatures.",
       ],
       [
         "Examples",
@@ -509,17 +507,17 @@ const groups = [
     ],
   ],
   [
-    "Explore version 2",
+    "V2 controls",
     [
       [
         "V2 adoption guide",
         "docs/VERSION_2_GUIDE.md",
-        "What shipped, how to adopt it, and its limits.",
+        "Features, defaults, support, and limitations.",
       ],
       [
         "Durable evidence",
         "docs/DURABLE_EVIDENCE.md",
-        "Scoped sources and recoverable observations.",
+        "Retained results, projections, and recovery.",
       ],
       [
         "Task state",
@@ -529,12 +527,12 @@ const groups = [
       [
         "Helpers & budgets",
         "docs/MODEL_TASKS_AND_HELPERS.md",
-        "Bounded helper calls and shared allowances.",
+        "Helper models and shared execution limits.",
       ],
     ],
   ],
   [
-    "Connect the whole system",
+    "Integrations",
     [
       [
         "Connector catalog",
@@ -565,7 +563,7 @@ await emit(
   documentShell({
     page: docPage,
     title: "Documentation",
-    html: `<p class="eyebrow">ONERINGAI V2</p><h1>Build something useful.</h1><p class="doc-intro">From your first connector to a complete agent host. These pages are generated from the library's recorded v2 source, with local links and searchable guides.</p><a class="cookbook-callout" href="${docHref("apps/amos/docs/AGENT_RUNTIME.md", docPage)}"><span class="eyebrow">RECOMMENDED WALKTHROUGH</span><h2>The AMOS cookbook <span>↗</span></h2><p>A complete application: configure, run, switch harnesses, inspect, and recover.</p></a><p class="doc-note">Published beta <strong>${metadata.version}</strong> · Source <code>${metadata.commit.slice(0, 7)}</code> · Synced ${metadata.syncedAt}. External harnesses remain preview. Snapshot availability does not establish live provider access.</p>${groups.map(([name, links]) => `<h2>${name}</h2><div class="doc-card-grid">${links.map(([title, f, desc]) => `<a href="${docHref(f, docPage)}"><h3>${title} <span>↗</span></h3><p>${desc}</p></a>`).join("")}</div>`).join("")}<h2>All guides</h2><div class="all-guides">${[
+    html: `<p class="eyebrow">ONERINGAI V2</p><h1>Documentation</h1><p class="doc-intro">Guides, API reference, and examples for oneringai v2.</p><a class="cookbook-callout" href="${docHref("apps/amos/docs/AGENT_RUNTIME.md", docPage)}"><span class="eyebrow">RUNTIME WALKTHROUGH</span><h2>AMOS cookbook <span>↗</span></h2><p>Set up a host, run each driver, inspect activity, and resume sessions.</p></a><p class="doc-note">Beta <strong>${metadata.version}</strong> · Docs <code>${metadata.commit.slice(0, 7)}</code> · Updated ${metadata.syncedAt}. External harnesses are preview; provider access is required.</p>${groups.map(([name, links]) => `<h2>${name}</h2><div class="doc-card-grid">${links.map(([title, f, desc]) => `<a href="${docHref(f, docPage)}"><h3>${title} <span>↗</span></h3><p>${desc}</p></a>`).join("")}</div>`).join("")}<h2>All guides</h2><div class="all-guides">${[
       ...docs.values(),
     ]
       .filter(
@@ -584,7 +582,7 @@ await emit(
       "Search the OneRingAI v2 user guide, API reference, examples, AMOS cookbook, memory system, connectors, and migration documentation.",
   },
 );
-const runtimeCode = `const agent = runtime.createAgent({\n  id: 'research-assistant',\n  instructions: 'Research carefully. Cite sources.',\n});\n\nconst options = {\n  ...hostSessionOptions,\n  execution: {\n    driver: 'oneringai.agent',\n    connector: 'openai-main',\n    model: 'gpt-5.6-terra',\n  },\n};\n\nawait agent.inspect(options);\nconst session = await agent.openSession(options);`;
+const runtimeCode = `const agent = runtime.createAgent({\n  id: 'researcher', instructions: 'Cite sources.',\n});\nconst options = {\n  ...hostSessionOptions,\n  execution: {\n    driver: 'oneringai.agent',\n    connector: 'openai-main',\n    model: 'gpt-5.6-terra',\n  },\n};\nawait agent.inspect(options);\nconst session = await agent.openSession(options);`;
 let home = await readFile(path.join(root, "src/home.html"), "utf8");
 home = home
   .replaceAll("{{mark}}", mark)
@@ -594,15 +592,10 @@ home = home
     hljs.highlight(runtimeCode, { language: "typescript" }).value,
   )
   .replace(/\{\{doc:([^}]+)\}\}/g, (_, f) => docHref(f, "index.html"));
-await emit(
-  "index.html",
-  "Your agents. Your infrastructure. Your choice.",
-  home,
-  {
-    description:
-      "OneRingAI v2 is an open-source TypeScript foundation for agents, authenticated connectors, entity/fact memory, and interchangeable agent harnesses.",
-  },
-);
+await emit("index.html", "TypeScript agents, tools and memory", home, {
+  description:
+    "Open-source TypeScript library for AI agents, authenticated API tools, entity/fact memory, multimodal APIs, and swappable agent harnesses.",
+});
 function sourceWithAnchors(file, source) {
   const lines = source.split("\n");
   const at = new Map();
@@ -670,14 +663,14 @@ await emit(
   documentShell({
     page: statusPage,
     title: "Source reference status",
-    html: `<h1>Source reference status</h1><p>Historical design records can refer to uncommitted artifacts, private files, or source paths absent from this revision. Such links lead here rather than inventing a destination. The supported integration guides and public API are the starting point for applications.</p><p><a href="${relative(statusPage, "docs/index.html")}">Return to documentation →</a></p><details><summary>Snapshot reference warnings (${warnings.size})</summary><ul>${[...warnings].map((w) => `<li>${e(w)}</li>`).join("")}</ul></details>`,
+    html: `<h1>Source reference status</h1><p>This source reference is absent from the recorded revision. Use the current guides and API reference for integration.</p><p><a href="${relative(statusPage, "docs/index.html")}">Return to documentation →</a></p><details><summary>Snapshot reference warnings (${warnings.size})</summary><ul>${[...warnings].map((w) => `<li>${e(w)}</li>`).join("")}</ul></details>`,
   }),
   { bodyClass: "documentation", active: "docs", noindex: true },
 );
 await emit(
   "404.html",
   "Page not found",
-  `<main id="main" class="container not-found"><p class="eyebrow">404</p><h1>This page has moved<br>or doesn't exist.</h1><p>Try the documentation hub or search the v2 guides.</p><a class="button primary" href="/docs/">Open documentation →</a><button class="button secondary" data-open-search>Search docs</button></main>`,
+  `<main id="main" class="container not-found"><p class="eyebrow">404</p><h1>Page not found</h1><p>Search the guides or open the documentation.</p><a class="button primary" href="/docs/">Documentation →</a><button class="button secondary" data-open-search>Search docs</button></main>`,
   { noindex: true },
 );
 // Retain meaningful historical public URLs without shipping the old theme.

@@ -33,12 +33,13 @@ CI performs these steps using the exact recorded commit. The documentation sourc
 - `src/home.html`: landing page; `{{doc:relative/library/path.md#anchor}}` links resolve at build time.
 - `src/pages/`: quickstart, comparison, and applications content. `library/` links refer to the recorded library source. Other relative Markdown links refer to these authored pages.
 - `src/assets/site.css`: shared color, spacing, typography, responsive, dark-theme, and documentation styles. Fonts use the system stack; no remote font requests.
+- `src/assets/analytics.js`: restores the existing Google Analytics property `G-0DH6CTK91N` on `oneringai.io` and `www.oneringai.io`; local previews and other hosts do not send traffic. The standard `config` command sends one page view per document load.
 - `src/assets/site.js`: local search, keyboard navigation, copy buttons, color theme, mobile navigation, and the illustrative harness selector.
 - `src/assets/mark.svg`: original ring mark and favicon. `social.svg` is the editable social card; `social.png` is its raster export. Regenerate the PNG with an SVG rasterizer after changing the SVG.
 - `scripts/`: static generation, snapshot synchronization, shared shell, and local server.
 - `tests/site.test.mjs`: generated links/fragments, source line anchors, semantic structure, metadata, search routes, comparison sources, and hosting checks.
 
-The full user guide and generated public API are split at real Markdown h2 tokens into chapters. Inline and cross-document anchors are rewritten to the corresponding chapter. Public usage guides, AMOS, hosea, examples, and release notes are rendered from the same source. Referenced historical design/evaluation records remain available as source references, outside the integration search index. Raw HTML in documentation is sanitized. Source code is escaped and reference line anchors are retained.
+The user guide is split at real Markdown h2 tokens; the generated API is split at its declared table-of-contents categories. Inline and cross-document anchors are rewritten to the corresponding chapter. Public usage guides, AMOS, hosea, examples, and release notes are rendered from the same source. Referenced historical design/evaluation records remain available as source references, outside the integration search index. Raw HTML in documentation is sanitized. Source code is escaped and reference line anchors are retained.
 
 Do not edit the gitignored snapshot or generated `dist/`. Correct library documentation in the library, commit it, then refresh the snapshot manifest. Do not hand-edit its generated API reference. Keep internal documentation links local and independent of Git branch names.
 
@@ -47,6 +48,10 @@ Do not edit the gitignored snapshot or generated `dist/`. Correct library docume
 The comparison at `src/pages/compare.md` was researched against official documentation on 2 November 2026. Preserve the source links and review date, credit the alternatives' capabilities, and describe concrete adoption tradeoffs. Do not invent speed/cost rankings, popularity statistics, or unsupported-feature claims. Keep the published beta and external-harness preview boundaries explicit.
 
 The [validation record](content/VALIDATION.md) records the delivered scope and checks.
+
+## Typography and copy
+
+Reading text uses 18px, secondary text and controls 16px, metadata 13px, and code 14px at the default browser scale. Shared rem-based tokens preserve browser zoom and text scaling. Keep headings descriptive and copy specific to documented APIs.
 
 ## Verify and deploy
 

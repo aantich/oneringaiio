@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { runInNewContext } from "node:vm";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,6 +19,7 @@ await walk(dist);
 const known = new Set(files);
 const pages = new Map();
 const semantics = [];
+const analyticsCoverage = [];
 for (const p of files.filter(
   (p) => p.endsWith(".html") && !p.includes("/raw/"),
 )) {
@@ -29,6 +31,11 @@ for (const p of files.filter(
   ].map((el) => el.getAttribute("href") ?? el.getAttribute("src"));
   pages.set(p, { ids: new Set(ids), refs });
   if (!document.querySelector('meta[http-equiv="refresh"]')) {
+    analyticsCoverage.push({
+      page: p,
+      count: document.querySelectorAll('script[src$="assets/analytics.js"]')
+        .length,
+    });
     if (document.querySelectorAll("h1").length !== 1)
       semantics.push(`${p}: requires one h1`);
     if (
@@ -98,7 +105,7 @@ test("search results resolve and do not recommend historical designs or internal
 test("homepage presents v2 beta, correct package, cookbook, and five harness examples", async () => {
   const html = await readFile(path.join(dist, "index.html"), "utf8");
   const { document } = parseHTML(html);
-  assert.match(document.querySelector("h1").textContent, /Your agents/);
+  assert.match(document.querySelector("h1").textContent, /AI agents/);
   for (const term of [
     "npm install oneringai",
     "2.0.0-beta.1",
@@ -184,4 +191,48 @@ test("API chapters follow generated categories rather than embedded comment head
       ),
     ),
   );
+});
+
+// Track the existing property once per page. Exercise the provider bootstrap
+// offline so tests do not send synthetic traffic to the live Analytics property.
+test("every rendered page includes the shared Analytics loader once", () => {
+  for (const item of analyticsCoverage) assert.equal(item.count, 1, item.page);
+});
+test("Analytics configures the original property once, only on production hosts", async () => {
+  const source = await readFile(path.join(dist, "assets/analytics.js"), "utf8");
+  for (const hostname of [
+    "oneringai.io",
+    "www.oneringai.io",
+    "localhost",
+    "127.0.0.1",
+    "aantich.github.io",
+    "example.com",
+  ]) {
+    const tags = [];
+    const window = { location: { hostname } };
+    const document = {
+      getElementById: (id) => tags.find((t) => t.id === id),
+      createElement: (name) => ({ nodeName: name }),
+      head: { appendChild: (tag) => tags.push(tag) },
+    };
+    const sandbox = { window, document };
+    runInNewContext(source, sandbox);
+    runInNewContext(source, sandbox);
+    if (["oneringai.io", "www.oneringai.io"].includes(hostname)) {
+      assert.equal(tags.length, 1);
+      assert.equal(
+        tags[0].src,
+        "https://www.googletagmanager.com/gtag/js?id=G-0DH6CTK91N",
+      );
+      assert.equal(tags[0].async, true);
+      const commands = Array.from(window.dataLayer, (args) => Array.from(args));
+      assert.equal(commands.length, 2);
+      assert.equal(commands[0][0], "js");
+      assert.equal(commands[1][0], "config");
+      assert.equal(commands[1][1], "G-0DH6CTK91N");
+    } else {
+      assert.equal(tags.length, 0);
+      assert.equal(window.dataLayer, undefined);
+    }
+  }
 });
