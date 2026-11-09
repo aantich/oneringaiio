@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import MarkdownIt from "markdown-it";
-import GithubSlugger from "github-slugger";
+import { parseDocument } from "./markdown.mjs";
 import hljs from "highlight.js";
 import sanitizeHtml from "sanitize-html";
 import { escape as e, relative, layout, mark } from "./ui.mjs";
@@ -37,25 +37,7 @@ const allPages = [];
 const search = [];
 const warnings = new Set();
 function parse(source, sourcePath) {
-  const tokens = md.parse(source, {});
-  const slugger = new GithubSlugger();
-  const headings = [];
-  for (let i = 0; i < tokens.length; i++)
-    if (tokens[i].type === "heading_open") {
-      const text = tokens[i + 1].content;
-      const id = slugger.slug(text.replace(/`/g, ""));
-      tokens[i].attrSet("id", id);
-      headings.push({
-        id,
-        text,
-        level: Number(tokens[i].tag.slice(1)),
-        index: i,
-      });
-    }
-  const title =
-    headings.find((h) => h.level === 1)?.text.replace(/`/g, "") ||
-    sourcePath.split("/").at(-1).replace(/\.md$/, "").replaceAll("_", " ");
-  return { sourcePath, source, tokens, headings, title };
+  return parseDocument(md, source, sourcePath);
 }
 const special = new Map([
   ["USER_GUIDE.md", "user-guide"],
@@ -95,19 +77,8 @@ for (const f of docFiles) {
     let currentTitle = d.title;
     let cuts = d.headings.filter((h) => h.level === 2);
     if (f === "API_REFERENCE.md") {
-      // Generated API comments can contain their own h2 headings. Only the
-      // generator's declared table-of-contents categories are chapter boundaries.
-      const toc = cuts[0];
-      const end = cuts[1]?.index ?? d.tokens.length;
-      const categories = new Set(
-        d.tokens
-          .slice(toc.index, end)
-          .flatMap((t) => t.children || [])
-          .filter(
-            (t) => t.type === "link_open" && t.attrGet("href")?.startsWith("#"),
-          )
-          .map((t) => t.attrGet("href").slice(1)),
-      );
+      // Only declared categories split generated API comments into chapters.
+      const categories = d.categories;
       cuts = cuts.filter((h) => categories.has(h.id));
     }
     for (const h of cuts) {
@@ -139,6 +110,7 @@ for (const f of docFiles) {
     );
     for (const h of p.headings) d.anchors.set(h.id, p.path);
   }
+  for (const id of d.contentsAnchors) d.anchors.set(id, d.path);
   docs.set(f, d);
 }
 const sourcePages = new Map();
@@ -225,7 +197,7 @@ function renderTokens(tokens, env) {
     ],
     allowedAttributes: {
       "*": ["id", "class"],
-      a: ["href", "title", "rel"],
+      a: ["href", "title", "rel", "aria-label"],
       img: ["src", "alt", "width", "height", "loading"],
       button: ["class", "aria-label"],
       th: ["align", "scope"],
@@ -276,6 +248,18 @@ md.renderer.rules.fence = (ts, i) => {
           .value
       : e(t.content);
   return `<div class="code-block"><div class="code-bar"><span>${e(lang || "text")}</span><button class="copy-code" aria-label="Copy code">Copy</button></div><pre><code${lang ? ' class="language-' + e(lang) + '"' : ""}>${highlighted}</code></pre></div>\n`;
+};
+md.renderer.rules.heading_open = (ts, i, options, env, self) => {
+  const token = ts[i];
+  const anchor = token.tag !== "h1"
+    ? `<a class="heading-anchor" href="#${e(token.attrGet("id"))}" aria-label="Link to ${e(ts[i + 1].content.replace(/`/g, ""))}">#</a>` : "";
+  return self.renderToken(ts, i, options) + anchor;
+};
+md.renderer.rules.blockquote_open = (ts, i, options, env, self) => {
+  const text = ts[i + 2]?.content || "";
+  const kind = /^(?:\*\*)?(note|tip|important|warning|caution)(?:\*\*)?:/i.exec(text)?.[1]?.toLowerCase();
+  if (kind) ts[i].attrSet("class", `doc-callout callout-${kind}`);
+  return self.renderToken(ts, i, options);
 };
 const navGroups = [
   [
@@ -333,30 +317,36 @@ function docHref(f, page) {
     `${hash ? d.anchors.get(hash) || d.path : d.path}${hash ? "#" + hash : ""}`,
   );
 }
-function sideNav(page) {
-  return `<aside class="docs-sidebar"><button class="sidebar-toggle" aria-expanded="false" aria-controls="docs-navigation">Documentation menu <span>⌄</span></button><nav id="docs-navigation" aria-label="Documentation">${navGroups
-    .map(
-      ([title, links]) =>
-        `<div class="nav-group"><p>${title}</p>${links
-          .map(([label, f]) => {
-            const url = docHref(f, page);
-            return `<a href="${url}"${url.split("#")[0] === path.posix.basename(page) ? ' aria-current="page"' : ""}>${label}</a>`;
-          })
-          .join("")}</div>`,
-    )
-    .join("")}</nav></aside>`;
+const featuredDocs = [
+  ["User guide", "USER_GUIDE.md", "Learn the library, from your first agent to production."],
+  ["Examples", "examples/README.md", "Runnable recipes, setup instructions, and cleanup."],
+  ["API reference", "API_REFERENCE.md", "Explore public classes, methods, and types."],
+  ["AMOS cookbook", "apps/amos/docs/AGENT_RUNTIME.md", "Configure a host, run agents, and recover sessions."],
+];
+function libraryNav(page, doc) {
+  return `<nav class="docs-library-nav" aria-label="Documentation library"><a href="${relative(page, "docs/index.html")}">All documentation</a>${featuredDocs.map(([label, f]) => `<a href="${docHref(f, page)}"${doc?.sourcePath === f ? ' aria-current="page"' : ""}>${label}</a>`).join("")}</nav>`;
+}
+function sideNav(page, doc, headings) {
+  const groupLinks = navGroups.map(([title, links]) =>
+    `<div class="nav-group"><p>${title}</p>${links.map(([label, f]) => {
+      const url = docHref(f, page);
+      return `<a href="${url}"${url.split("#")[0] === path.posix.basename(page) ? ' aria-current="page"' : ""}>${label}</a>`;
+    }).join("")}</div>`).join("");
+  const split = doc?.parts.length > 1;
+  const toc = headings.filter((h) => h.level > 1 && h.level <= 3);
+  const title = doc ? featuredDocs.find(([, f]) => f === doc.sourcePath)?.[0] || doc.title : "On this page";
+  const entries = split ? doc.parts.map((p, i) => {
+    const active = p.path === page;
+    return `<li><a class="chapter-link" href="${relative(page, p.path)}"${active ? ' aria-current="page"' : ""}><span class="chapter-number">${i === 0 ? "·" : String(i).padStart(2, "0")}</span><span>${e(i === 0 ? "Overview" : p.title)}</span></a>${active && toc.length ? `<ul class="section-links">${toc.filter((h) => h.level === 3).map((h) => `<li><a data-section-link href="#${e(h.id)}">${e(h.text)}</a></li>`).join("")}</ul>` : ""}</li>`;
+  }).join("") : toc.map((h) => `<li><a data-section-link class="level-${h.level}" href="#${e(h.id)}">${e(h.text)}</a></li>`).join("");
+  const navigation = entries ? `<p class="sidebar-title">${e(title)}</p><p class="sidebar-caption">${split ? `${doc.parts.length - 1} chapters` : "On this page"}</p><div class="guide-contents"${doc?.contentsAnchors.length ? ` id="${e(doc.contentsAnchors[0])}"` : ""}><ul class="contents-list">${entries}</ul></div><details class="browse-guides"><summary>Browse all documentation</summary>${groupLinks}</details>` : groupLinks;
+  return `<aside class="docs-sidebar"><button class="sidebar-toggle" aria-expanded="false" aria-controls="docs-navigation">${doc ? e(title) + " · Contents" : "Documentation menu"} <span>⌄</span></button><nav id="docs-navigation" aria-label="${doc ? e(title) + " contents" : "Documentation"}">${navigation}</nav></aside>`;
 }
 function documentShell({
-  page,
-  title,
-  html,
-  headings = [],
-  doc,
-  section = "Documentation",
-  chapters = "",
+  page, title, html, headings = [], doc,
+  section = "Documentation", chapters = "",
 }) {
-  const toc = headings.filter((h) => h.level <= 3);
-  return `<div class="docs-container">${sideNav(page)}<main id="main" class="doc-main"><div class="doc-breadcrumb"><a href="${relative(page, "docs/index.html")}">${e(section)}</a><span>/</span><span>${e(title)}</span></div>${doc ? `<div class="doc-version"><span>v${metadata.version}</span><span>Snapshot ${metadata.commit.slice(0, 7)}</span><a href="${relative(page, `raw/${doc.sourcePath}`)}" download>Markdown ↗</a></div>` : ""}<article class="prose">${html}</article>${chapters}<div class="doc-end"><span>Documentation snapshot · ${metadata.syncedAt}</span><a href="https://github.com/aantich/oneringai/issues">Suggest a correction ↗</a></div></main><aside class="doc-toc">${toc.length ? "<p>ON THIS PAGE</p>" : ""}<nav aria-label="On this page">${toc.map((h) => `<a class="level-${h.level}" href="#${e(h.id)}">${e(h.text.replace(/`/g, ""))}</a>`).join("")}</nav></aside></div>`;
+  return `${libraryNav(page, doc)}<div class="docs-container">${sideNav(page, doc, headings)}<main id="main" class="doc-main"><div class="doc-breadcrumb"><a href="${relative(page, "docs/index.html")}">${e(section)}</a>${doc && doc.parts.length > 1 ? `<span>/</span><a href="${relative(page, doc.path)}">${e(featuredDocs.find(([, f]) => f === doc.sourcePath)?.[0] || doc.title)}</a>` : ""}<span>/</span><span>${e(title)}</span></div>${doc ? `<div class="doc-version"><span>v${metadata.version}</span><span>Snapshot ${metadata.commit.slice(0, 7)}</span><a href="${relative(page, `raw/${doc.sourcePath}`)}" download>Download Markdown ↓</a></div>` : ""}<article class="prose">${html}</article>${chapters}<div class="doc-end"><span>Documentation snapshot · ${metadata.syncedAt}</span><a href="https://github.com/aantich/oneringai/issues">Suggest a correction ↗</a></div></main></div>`;
 }
 async function emit(page, title, html, opts = {}) {
   const full = layout({
@@ -388,25 +378,24 @@ await writeFile(path.join(out, socialImagePath), socialImageData);
 await cp(lib, path.join(out, "raw"), { recursive: true });
 for (const d of docs.values())
   for (const p of d.parts) {
-    const html = renderTokens(d.tokens.slice(p.start, p.end), {
+    const tokens = d.tokens.slice(p.start, p.end);
+    const promoted = tokens[0]?.type === "heading_open" && tokens[0].tag === "h2";
+    // A chapter heading becomes the page title while retaining its original ID.
+    // Clone the tokens so the canonical outline and source rendering stay intact.
+    if (promoted) for (const i of [0, 2])
+      tokens[i] = Object.assign(Object.create(Object.getPrototypeOf(tokens[i])), tokens[i], { tag: "h1" });
+    const html = renderTokens(tokens, {
       sourcePath: d.sourcePath,
       page: p.path,
     });
-    const hasH1 = p.headings.some((h) => h.level === 1);
-    const body = hasH1 ? html : `<h1>${e(p.title)}</h1>${html}`;
+    const hasH1 = promoted || p.headings.some((h) => h.level === 1);
+    const intro = p === d.parts[0] && d.parts.length > 1
+      ? `<div class="guide-start"><span>${d.parts.length - 1} chapters · Choose a chapter in the contents</span><a href="${relative(p.path, d.parts[1].path)}">Start reading →</a></div>` : "";
+    const body = (hasH1 ? html : `<h1>${e(p.title)}</h1>${html}`) + intro;
     let chapters = "";
     if (d.parts.length > 1) {
       const at = d.parts.indexOf(p);
       chapters = `<nav class="chapter-nav" aria-label="Guide chapters">${at > 0 ? `<a href="${relative(p.path, d.parts[at - 1].path)}"><small>Previous</small>${e(d.parts[at - 1].title)} ←</a>` : "<span></span>"}${at < d.parts.length - 1 ? `<a href="${relative(p.path, d.parts[at + 1].path)}"><small>Next</small>${e(d.parts[at + 1].title)} →</a>` : ""}</nav>`;
-      if (at === 0 && d.sourcePath !== "API_REFERENCE.md")
-        chapters =
-          `<div class="chapter-list"><h2>Browse chapters</h2>${d.parts
-            .slice(1)
-            .map(
-              (c) =>
-                `<a href="${relative(p.path, c.path)}">${e(c.title)} <span>→</span></a>`,
-            )
-            .join("")}</div>` + chapters;
     }
     await emit(
       p.path,
@@ -456,7 +445,7 @@ for (const [file, page] of [
   ["applications.md", "applications/index.html"],
 ]) {
   const d = parse(
-    await readFile(path.join(root, "src/pages", file), "utf8"),
+    (await readFile(path.join(root, "src/pages", file), "utf8")).replaceAll("{{version}}", metadata.version),
     "@site/" + file,
   );
   const html = renderTokens(d.tokens, { sourcePath: d.sourcePath, page });
@@ -572,7 +561,7 @@ await emit(
   documentShell({
     page: docPage,
     title: "Documentation",
-    html: `<p class="eyebrow">ONERINGAI V2</p><h1>Documentation</h1><p class="doc-intro">Guides, API reference, and examples for oneringai v2.</p><a class="cookbook-callout" href="${docHref("apps/amos/docs/AGENT_RUNTIME.md", docPage)}"><span class="eyebrow">RUNTIME WALKTHROUGH</span><h2>AMOS cookbook <span>↗</span></h2><p>Set up a host, run each driver, inspect activity, and resume sessions.</p></a><p class="doc-note">Beta <strong>${metadata.version}</strong> · Docs <code>${metadata.commit.slice(0, 7)}</code> · Updated ${metadata.syncedAt}. External harnesses are preview; provider access is required.</p>${groups.map(([name, links]) => `<h2>${name}</h2><div class="doc-card-grid">${links.map(([title, f, desc]) => `<a href="${docHref(f, docPage)}"><h3>${title} <span>↗</span></h3><p>${desc}</p></a>`).join("")}</div>`).join("")}<h2>All guides</h2><div class="all-guides">${[
+    html: `<p class="eyebrow">ONERINGAI V2</p><h1>Documentation</h1><p class="doc-intro">From your first agent to the complete API. Read every guide here.</p><div class="doc-card-grid featured-docs">${featuredDocs.map(([label, f, desc], i) => `<a href="${docHref(f, docPage)}"><span class="eyebrow">0${i + 1} / ${i === 2 ? "REFERENCE" : "GUIDE"}</span><h2>${label} <span>→</span></h2><p>${desc}</p></a>`).join("")}</div><p class="doc-note">Beta <strong>${metadata.version}</strong> · Docs <code>${metadata.commit.slice(0, 7)}</code> · Updated ${metadata.syncedAt}. External harnesses are preview; provider access is required.</p>${groups.map(([name, links]) => `<h2>${name}</h2><div class="doc-card-grid">${links.map(([title, f, desc]) => `<a href="${docHref(f, docPage)}"><h3>${title} <span>↗</span></h3><p>${desc}</p></a>`).join("")}</div>`).join("")}<h2>All guides</h2><div class="all-guides">${[
       ...docs.values(),
     ]
       .filter(
@@ -615,8 +604,8 @@ function sourceWithAnchors(file, source) {
     if (line === null) {
       const h = headings.find((h) => h.id === hash);
       if (h) {
-        const parsed = md.parse(source, {});
-        const token = parsed[h.index];
+        const parsed = parse(source, file);
+        const token = parsed.tokens[h.index];
         line = token.map?.[0] ?? null;
       }
     }
@@ -627,12 +616,16 @@ function sourceWithAnchors(file, source) {
     if (!at.has(line)) at.set(line, []);
     at.get(line).push(hash);
   }
-  return lines
+  const language = path.extname(file).slice(1);
+  const highlighted = hljs.getLanguage(language)
+    ? hljs.highlight(source, { language, ignoreIllegals: true }).value
+    : e(source);
+  return highlighted.split("\n")
     .map(
       (line, i) =>
         (at.get(i) || [])
           .map((id) => `<span class="source-anchor" id="${e(id)}"></span>`)
-          .join("") + e(line),
+          .join("") + line,
     )
     .join("\n");
 }
@@ -664,6 +657,15 @@ for (const [dir, page] of directoryPages) {
     }),
     { bodyClass: "documentation", active: "docs", noindex: true },
   );
+}
+for (const d of docs.values()) {
+  if (d.sourcePath !== "USER_GUIDE.md") continue;
+  for (const id of d.contentsAnchors) {
+    const page = `docs/${docBase(d.sourcePath)}/${id}/index.html`;
+    await mkdir(path.dirname(path.join(out, page)), { recursive: true });
+    const href = relative(page, `${d.path}#${id}`);
+    await writeFile(path.join(out, page), `<!doctype html><html lang="en"><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=${e(href)}"><link rel="canonical" href="https://oneringai.io/${d.path.replace(/index.html$/, "")}"><title>Guide contents · OneRingAI</title><a href="${e(href)}">Open guide contents</a></html>`);
+  }
 }
 const statusPage = "docs/reference-status/index.html";
 await emit(

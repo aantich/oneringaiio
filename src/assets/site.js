@@ -66,6 +66,62 @@ $(".sidebar-toggle")?.addEventListener("click", (event) => {
   button.setAttribute("aria-expanded", String(open));
   $("#docs-navigation").classList.toggle("open", open);
 });
+// Native details remain usable without JavaScript. Deep links also reveal API
+// members inside a closed details element before the browser scrolls to them.
+function revealHeading(hash) {
+  let id;
+  try { id = decodeURIComponent(hash.replace(/^#/, "")); } catch { return; }
+  const target = document.getElementById(id);
+  if (!target) return;
+  let parent = target.parentElement;
+  while (parent) {
+    if (parent.tagName === "DETAILS") parent.open = true;
+    parent = parent.parentElement;
+  }
+  return target;
+}
+document.addEventListener("click", (event) => {
+  const link = event.target.closest('a[href^="#"]');
+  if (!link) return;
+  revealHeading(link.getAttribute("href"));
+  if (link.closest("#docs-navigation") && matchMedia("(max-width: 900px)").matches) {
+    $("#docs-navigation").classList.remove("open");
+    $(".sidebar-toggle")?.setAttribute("aria-expanded", "false");
+  }
+});
+function revealHash() {
+  const target = revealHeading(location.hash);
+  if (target) requestAnimationFrame(() => target.scrollIntoView());
+}
+window.addEventListener("hashchange", revealHash);
+if (location.hash) revealHash();
+const sectionLinks = $$("[data-section-link]");
+if (sectionLinks.length && "IntersectionObserver" in window) {
+  const byId = new Map(sectionLinks.map((link) => [decodeURIComponent(link.hash.slice(1)), link]));
+  const visible = new Map();
+  let active;
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) visible.set(entry.target.id, entry.target);
+      else visible.delete(entry.target.id);
+    }
+    const first = [...visible.values()].sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0];
+    if (!first) return;
+    active?.removeAttribute("aria-current");
+    active = byId.get(first.id);
+    active?.setAttribute("aria-current", "location");
+  }, { rootMargin: "-110px 0px -55% 0px" });
+  for (const id of byId.keys()) {
+    const heading = document.getElementById(id);
+    if (heading) observer.observe(heading);
+  }
+}
+if (matchMedia("(min-width: 901px)").matches) {
+  const chapter = $('.chapter-link[aria-current="page"]');
+  const sidebar = $(".docs-sidebar");
+  if (chapter && sidebar && chapter.offsetTop > sidebar.clientHeight - 80)
+    sidebar.scrollTop = Math.max(0, chapter.offsetTop - sidebar.clientHeight / 3);
+}
 const dialog = $(".search-dialog");
 const input = $("#docs-search");
 const results = $(".search-results");

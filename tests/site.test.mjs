@@ -128,7 +128,7 @@ test("homepage presents v2 beta, correct package, cookbook, and five harness exa
   assert.match(document.querySelector("h1").textContent, /AI agents/);
   for (const term of [
     "npm install oneringai",
-    "2.0.0-beta.1",
+    JSON.parse(await readFile(path.join(root, "content/library.json"), "utf8")).version,
     "External harnesses are preview",
   ])
     assert(html.includes(term), term);
@@ -143,6 +143,54 @@ test("homepage presents v2 beta, correct package, cookbook, and five harness exa
   ])
     assert(!html.includes(bad), bad);
   assert.equal(document.querySelectorAll("[data-harness]").length, 5);
+});
+test("the four README docs are prominent local destinations with left contents", async () => {
+  const { document: home } = parseHTML(await readFile(path.join(dist, "index.html"), "utf8"));
+  assert.equal(home.querySelector(".hero").nextElementSibling.className, "container docs-entry");
+  const routes = ["user-guide", "examples", "api-reference", "amos-cookbook"];
+  for (const route of routes) {
+    assert(home.querySelector(`.docs-entry a[href="docs/${route}/index.html"]`), route);
+    const { document } = parseHTML(await readFile(path.join(dist, `docs/${route}/index.html`), "utf8"));
+    assert(document.querySelector('.docs-library-nav a[aria-current="page"]'), route);
+    const sidebar = document.querySelector('.docs-sidebar nav');
+    assert(sidebar.querySelector('.contents-list a'), route);
+    assert(document.querySelector('main.doc-main article.prose'), route);
+    assert(!document.querySelector('.doc-toc'), "contents must live on the left");
+    assert(![...document.querySelectorAll('article h2')].some((h) => /Table of Contents/i.test(h.textContent)), route);
+    for (const link of document.querySelectorAll('article a[href]')) {
+      assert(!/^https:\/\/github\.com\/aantich\/oneringai\/(blob|tree)\//.test(link.getAttribute('href')), link.href);
+    }
+  }
+  const { document: chapter } = parseHTML(await readFile(path.join(dist, 'docs/user-guide/getting-started/index.html'), 'utf8'));
+  assert.match(chapter.querySelector('.chapter-link[aria-current="page"]').textContent, /Getting Started/);
+  assert(chapter.querySelector('.section-links a[href="#installation"]'));
+  assert(chapter.querySelector('article .hljs-keyword'));
+  assert(chapter.querySelector('article .copy-code'));
+  assert(chapter.querySelector('article .heading-anchor[aria-label]'));
+  assert.equal(chapter.querySelector('article h1').id, 'getting-started');
+  assert(![...chapter.querySelectorAll('article h2')].some((h) => h.textContent.includes('Getting Started')));
+  const { document: oldContents } = parseHTML(await readFile(path.join(dist, 'docs/user-guide/table-of-contents/index.html'), 'utf8'));
+  assert(oldContents.querySelector('meta[http-equiv="refresh"]').content.includes('../index.html#table-of-contents'));
+});
+test("homepage and quickstart use the pinned release version and describe browser support", async () => {
+  const { version } = await json("build-report.json").then((report) => report.metadata);
+  for (const route of ["index.html", "docs/start/index.html"]) {
+    const { document } = parseHTML(await readFile(path.join(dist, route), "utf8"));
+    const text = document.querySelector("main").textContent;
+    assert(text.includes(version), route);
+    assert.match(text, /browser/i, route);
+    assert(!text.includes("{{version}}"), route);
+    assert(document.querySelector('main a[href*="browser-agents"]'), route);
+  }
+  const source = await readFile(path.join(root, "src/pages/start.md"), "utf8");
+  assert(source.includes("oneringai@{{version}}"));
+});
+test("downloadable originals and highlighted source views retain exact source text and line links", async () => {
+  const sourceFile = 'examples/agent-runtime-swappable.ts';
+  const { document } = parseHTML(await readFile(path.join(dist, `source/${sourceFile}.html`), 'utf8'));
+  const source = await readFile(path.join(dist, `raw/${sourceFile}`), 'utf8');
+  assert.equal(document.querySelector('article pre code').textContent, source);
+  assert(document.querySelector('article pre code .hljs-keyword'));
 });
 test("all non-redirect pages have accessible semantic shells and descriptive metadata", () =>
   assert.deepEqual(semantics, []));

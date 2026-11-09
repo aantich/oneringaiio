@@ -1,5 +1,62 @@
 # Website v2 validation — 2026-11-02
 
+## Documentation reading experience — 2026-11-09
+
+Publication follow-up — 2026-11-09: the current snapshot is
+`cee8993d23c23696b81dc123fff5ae3f2a0bf3fd` (`oneringai@2.0.0-beta.2`). That
+documentation-only library commit adds the required website handoff for every
+v2 npm release to AGENTS, RELEASING, release readiness and the Version 2 Guide.
+The library documentation check passes for 160 Markdown files, 500 TypeScript
+blocks and 12 complete examples. Registry verification confirms beta.2 under
+both `latest` and `next`; no new npm package is published by this update.
+
+The homepage now introduces browser/Node portability and links prominently to
+the browser setup guide. The quickstart covers browser/Worker setup, resolves
+its package version from the shared snapshot and links to the current changelog.
+Both website agent/release guides require docs **and** authored main-page review
+and deployment for every v2 publication, including prereleases. A new regression
+check ensures homepage/quickstart versions match the recorded snapshot and both
+link to browser setup. All 16 checks pass; the final build emits 824 pages from
+73 source documents, with 3,236 search records and zero reference warnings.
+Desktop and 320px mobile QA confirms the new release highlight and quickstart
+fit without horizontal page overflow, including the dark theme.
+
+The initial documentation implementation used library commit
+`7bb88ebdaeec9b47a8c6351d37986281bbde3c63` (`oneringai@2.0.0-beta.2`).
+The library checkout was clean; no canonical library files were changed.
+`npm run docs:sync -- ../oneringai` copied 1,397 tracked documentation and
+reference files. The deterministic HTML generator, also exposed as
+`npm run docs:generate`, emits 824 pages from 73 rendered source documents,
+with 3,244 searchable records and zero reference warnings. Source viewers
+account for most pages; these counts do not represent separately authored guides.
+
+User Guide, Examples, API Reference, and AMOS cookbook are linked directly
+below the homepage introduction, on the documentation hub, and above every
+documentation page. Contents are extracted from Markdown tokens into a left
+sidebar. The User Guide has 69 chapters; the API has its 19 declared categories.
+Current-chapter sections expand in the sidebar, and chapter headings become
+page titles without duplication. Markdown contents lists no longer occupy the
+reading column. Existing contents links and the User Guide's old contents page
+remain resolvable. Other references remain local, including source-line links.
+
+Fifteen offline checks cover token-based outline extraction, duplicate heading
+IDs, fenced samples, contents detection, local entry points, chapter navigation,
+original source text after syntax highlighting, all generated links/fragments,
+search, semantic shells, metadata, Analytics, and existing hosting contracts.
+Browser QA covered the desktop layout, 390px and 320px widths with no document
+overflow, mobile contents opening/closing, section navigation and highlighting,
+light/dark themes, User Guide and AMOS, API deep links revealing closed details,
+clipboard copying with a success toast, and a search for “browser agents”
+returning 15 local results. The mobile contents control stays accessible while
+scrolling. No credentials, model calls, or new hosting services were used.
+
+The existing GitHub Pages workflow and `oneringai.io` custom domain are preserved.
+The deployment run for the website commit containing this record is the
+publication evidence. Local checks alone do not establish a live deployment;
+verify that run and the public version/snapshot before completing the handoff.
+
+## Original website delivery
+
 The website uses documentation snapshot `bebdcd173f01977d48b83a4d58614ac0c788c795`
 (`oneringai@2.0.0-beta.1`). That commit corrects availability/installation text in
 standalone library guides after the separately verified npm beta publication.

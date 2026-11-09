@@ -10,7 +10,11 @@ Requires Node.js **22.13+ or 24+**. ESM, CommonJS, and TypeScript declarations a
 npm install oneringai
 ```
 
-Published version: **`oneringai@2.0.0-beta.1`**. Both `latest` and `next` select this beta. Pin the version for reproducible installs.
+Published version: **`oneringai@{{version}}`**. Both `latest` and `next` select this beta. Pin the version for reproducible installs.
+
+Agents use the same API in Node.js, modern browsers, and dedicated Workers.
+For browser TypeScript settings, supplied storage/auth, compatible tools, and
+host boundaries, follow [Browser Agents](library/docs/BROWSER_AGENTS.md).
 
 ## Run an agent
 
@@ -54,4 +58,4 @@ Run with your TypeScript toolchain. To switch providers, register another connec
 
 Replace `@everworker/oneringai` with `oneringai` and update imports. Review optional SDK dependencies and enabled features. Existing `Agent.create()` defaults remain supported where documented.
 
-[Migration guide](library/docs/PACKAGE_MIGRATION.md) · [V2 release notes](library/CHANGELOG.md#200-beta1--2026-11-02)
+[Migration guide](library/docs/PACKAGE_MIGRATION.md) · [V2 release notes](library/CHANGELOG.md)

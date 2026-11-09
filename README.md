@@ -41,6 +41,42 @@ CI performs these steps using the exact recorded commit. The documentation sourc
 
 The user guide is split at real Markdown h2 tokens; the generated API is split at its declared table-of-contents categories. Inline and cross-document anchors are rewritten to the corresponding chapter. Public usage guides, AMOS, hosea, examples, and release notes are rendered from the same source. Referenced historical design/evaluation records remain available as source references, outside the integration search index. Raw HTML in documentation is sanitized. Source code is escaped and reference line anchors are retained.
 
+## Generate the HTML documentation
+
+```bash
+npm run docs:sync -- ../oneringai
+npm run docs:generate
+```
+
+`docs:generate` runs the same deterministic generator as the production build.
+It converts the recorded repository Markdown into static HTML in `dist/docs/`
+and rebuilds the website, local search index, source viewers, and sitemap.
+No AI service or credentials are involved. CI uses this generator automatically.
+
+The four README entry points have permanent website routes:
+
+| Canonical source | Website |
+| --- | --- |
+| `USER_GUIDE.md` | `/docs/user-guide/` |
+| `examples/README.md` | `/docs/examples/` |
+| `API_REFERENCE.md` | `/docs/api-reference/` |
+| `apps/amos/docs/AGENT_RUNTIME.md` | `/docs/amos-cookbook/` |
+
+These guides appear directly below the homepage introduction and at the top of
+every documentation page. `scripts/markdown.mjs` extracts real headings and moves
+Markdown contents lists into a left sidebar. Long references use chapter pages
+with the current chapter's sections expanded; shorter guides show their section
+hierarchy. The sidebar collapses on mobile. Previous/next links, heading
+permalinks, active-section tracking, highlighted code with copy buttons, styled
+notes, responsive tables, light/dark themes, and original Markdown downloads
+share the site's shell. Deep links reveal collapsed API details. Existing
+contents-page URLs redirect to the guide's sidebar anchor.
+
+Documentation and example/source links resolve locally, including cross-chapter
+fragments and source lines. Original source downloads preserve the exact bytes;
+HTML source viewers add syntax highlighting without changing the copied text.
+Provider documentation and other external references retain their original URLs.
+
 Do not edit the gitignored snapshot or generated `dist/`. Correct library documentation in the library, commit it, then refresh the snapshot manifest. Do not hand-edit its generated API reference. Keep internal documentation links local and independent of Git branch names.
 
 ## Comparison policy
@@ -64,6 +100,33 @@ This builds the complete output and checks every generated internal link and fra
 GitHub Actions checks pull requests. A push to `main` checks and deploys to the existing **GitHub Pages** site at **oneringai.io**. `CNAME`, `.nojekyll`, sitemap, robots policy, Open Graph metadata, `llms.txt`, and the custom 404 page are generated. Older `/main/index.html`, `/main/comparison.html`, and `/comparison.html` URLs redirect to v2. The old purchased theme and demo pages are no longer built or shipped.
 
 A deployment does not publish an npm version, change v1 maintenance, or distribute desktop installers.
+
+## Required update for every v2 npm release
+
+Persistent user instruction (2026-11-09): every v2 npm publication, including
+prereleases, requires this website's docs **and main pages** to be updated and
+deployed for that version. A docs-only sync does not complete the release handoff.
+
+1. Verify the published npm version and selected tags. Finish and push canonical
+   library documentation corrections, then use its clean committed checkout.
+2. Run `npm run docs:sync -- ../oneringai` and `npm run docs:generate`. Check the
+   exact version/commit recorded in `content/library.json` against the release.
+3. Review/update the homepage, quickstart, application pages, navigation,
+   installation/version text, release links, feature highlights, support/preview
+   boundaries, and affected metadata/social copy. Authored `{{version}}` markers
+   in the homepage and `src/pages/` resolve from the shared snapshot; capability
+   claims and dist-tag text still require review, even for patch releases.
+4. Run `npm run check`, then inspect desktop/mobile layouts, both themes,
+   contents, code copying, search, examples and API links in a browser.
+5. Commit and push the website update to `main`; wait for **Build and deploy
+   website** and the existing GitHub Pages deployment to succeed.
+6. Verify the public homepage, quickstart, User Guide, Examples, API Reference,
+   and AMOS cookbook. Record the npm version, library snapshot, website commit,
+   deployment run/URL and verification in the release handoff. Do not call it
+   complete while the website is stale. If deployment fails after npm publishes,
+   repair the website without republishing the package.
+
+The library's `RELEASING.md` owns the full package-plus-website release checklist.
 
 ## Social previews
 
