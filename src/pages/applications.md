@@ -2,6 +2,10 @@
 
 MIT-licensed terminal and desktop apps built with OneRingAI. Run both from source; v2 desktop installers have not been published.
 
+These recipes use the documentation snapshot for `oneringai@{{version}}`.
+The [shared coding-agent guide](library/AGENTS.md) covers current v2 APIs, plugin
+registration, and host boundaries when adapting these applications.
+
 ## AMOS: terminal agent
 
 Configure connectors, tools, permissions, and saved sessions. Native mode exposes context, routing, helpers, task state, and evidence controls. Runtime mode supports five harness bindings; external drivers remain preview.

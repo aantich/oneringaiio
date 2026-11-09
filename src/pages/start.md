@@ -16,6 +16,10 @@ Agents use the same API in Node.js, modern browsers, and dedicated Workers.
 For browser TypeScript settings, supplied storage/auth, compatible tools, and
 host boundaries, follow [Browser Agents](library/docs/BROWSER_AGENTS.md).
 
+This beta refreshes the [coding-agent guide](library/AGENTS.md) and custom-plugin
+examples. When supplying a `context` configuration object, include its required
+`model` field. Browser and Node agents retain the same API.
+
 ## Run an agent
 
 Set `OPENAI_API_KEY` in your environment. Load `.env` in your application if needed; OneRingAI does not load it automatically. Calls use your provider account.
