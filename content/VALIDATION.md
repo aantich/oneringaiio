@@ -130,3 +130,26 @@ generated-artifact checks cover every rendered page and the actual PNG bytes.
 All ten website checks pass with zero reference warnings.
 Refreshing an existing X card remains controlled by X; no post is published by
 these checks.
+
+## Beta.4 release website update — 2026-11-11
+
+The homepage, quickstart, application guide and homepage metadata now describe
+`oneringai@2.0.0-beta.4`: refreshed LLM/image/video/voice/embedding catalogs and
+opt-in host-managed ChatGPT plan access. The model audit links explain lifecycle,
+promotional pricing and adapter limits. Hosea's source instructions cover the
+account model catalog, explicit billing switch and separate media credentials;
+production OAuth/account eligibility remains unverified. V2 installers and
+external harness previews retain their existing boundaries.
+
+The documentation manifest pins the exact library revision and beta version.
+The local build produced 830 pages, 75 source documents and 3,241 search records,
+with zero reference warnings. All 16 website checks passed, including internal
+links/fragments, source links, Analytics and social metadata. Chromium QA passed
+at 1440px, 390px and 320px: light/dark persistence, mobile navigation, all five
+harness examples, install/code copying, keyboard search, guide contents,
+Examples/API/AMOS links, comparison overflow and the custom 404 page. Desktop
+and mobile screenshots were visually inspected. No model calls were made.
+
+The library's `docs/evaluations/BETA4_RELEASE_VALIDATION_2026_11_11.json` records
+the verified npm publication, exact documentation snapshot, website commit,
+GitHub Pages workflow and public-site verification separately.

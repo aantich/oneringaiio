@@ -29,6 +29,14 @@ Configure a connector before making model calls. Runtime mode requires the host 
 
 An Electron app for conversations, models, tools, and media. Supports light, dark, and system themes, plus adjustable text size.
 
+The beta.4 source adds **Continue with ChatGPT** in first-run setup and shared
+account management. It loads the selected account's available models before
+creating the first agent. Eligible accounts and host OAuth consent are required;
+production sign-in has not been live-verified. Signing out or hitting a plan limit
+does not automatically switch billing to API keys. Media, embeddings and realtime
+voice still require their own API-key connectors. Read the
+[plan-access setup and boundaries](library/docs/CHATGPT_PLAN_ACCESS.md).
+
 Run the isolated UI preview without an API key:
 
 ```bash

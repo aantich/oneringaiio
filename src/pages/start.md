@@ -16,9 +16,15 @@ Agents use the same API in Node.js, modern browsers, and dedicated Workers.
 For browser TypeScript settings, supplied storage/auth, compatible tools, and
 host boundaries, follow [Browser Agents](library/docs/BROWSER_AGENTS.md).
 
-This beta refreshes the [coding-agent guide](library/AGENTS.md) and custom-plugin
-examples. When supplying a `context` configuration object, include its required
-`model` field. Browser and Node agents retain the same API.
+This beta refreshes LLM, image, video, voice and embedding catalogs. Read the
+[November model audit](library/docs/MODEL_REGISTRY_REFRESH_2026_11_11.md) for
+retirements, promotional pricing dates and adapter limits. Catalog metadata does
+not establish account entitlement.
+
+Eligible local applications can opt in to [ChatGPT plan access](library/docs/CHATGPT_PLAN_ACCESS.md).
+The host owns OAuth, registration and rotating credentials; ordinary API-key setup
+below remains supported. Production OAuth/account admission has not been live-verified.
+When supplying a `context` configuration object, include its required `model` field.
 
 ## Run an agent
 
@@ -62,4 +68,4 @@ Run with your TypeScript toolchain. To switch providers, register another connec
 
 Replace `@everworker/oneringai` with `oneringai` and update imports. Review optional SDK dependencies and enabled features. Existing `Agent.create()` defaults remain supported where documented.
 
-[Migration guide](library/docs/PACKAGE_MIGRATION.md) · [V2 release notes](library/CHANGELOG.md)
+[Migration guide](library/docs/PACKAGE_MIGRATION.md) · [Beta.4 release notes](library/CHANGELOG.md#200-beta4--2026-11-11)
