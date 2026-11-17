@@ -153,3 +153,26 @@ and mobile screenshots were visually inspected. No model calls were made.
 The library's `docs/evaluations/BETA4_RELEASE_VALIDATION_2026_11_11.json` records
 the verified npm publication, exact documentation snapshot, website commit,
 GitHub Pages workflow and public-site verification separately.
+
+## Beta.5 release website update — 2026-11-17
+
+The homepage, quickstart, applications guide and homepage metadata describe
+`oneringai@2.0.0-beta.5` and its November 17 vendor review. They highlight Gemini
+4 Hydrogen and Grok Video 1.5 Lite, link the exact changelog and review, and keep
+account entitlement, unknown limits, paid cloud models and implemented endpoint
+boundaries explicit. Installation/version text follows the pinned snapshot.
+ChatGPT plan access retains its beta.4 introduction and live-account limitations;
+v2 desktop installers and external harnesses retain their existing boundaries.
+
+The local build produced 832 pages, 76 source documents and 3,242 search records,
+with zero reference warnings. All 16 website checks passed. Chromium checks
+passed at 1440px, 390px and 320px: light/dark persistence, mobile navigation and
+contents, all five harness choices, install/code copying, keyboard search,
+Examples/API/AMOS and quickstart links, comparison overflow and the custom 404.
+Desktop and mobile viewport screenshots were visually inspected. Google Analytics
+property G-0DH6CTK91N and the existing custom domain are preserved. No model calls
+were made.
+
+The library's `docs/evaluations/BETA5_RELEASE_VALIDATION_2026_11_17.json` records
+the verified npm publication, exact documentation snapshot, website commit,
+GitHub Pages workflow and public-site verification separately.

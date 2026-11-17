@@ -16,10 +16,11 @@ Agents use the same API in Node.js, modern browsers, and dedicated Workers.
 For browser TypeScript settings, supplied storage/auth, compatible tools, and
 host boundaries, follow [Browser Agents](library/docs/BROWSER_AGENTS.md).
 
-This beta refreshes LLM, image, video, voice and embedding catalogs. Read the
-[November model audit](library/docs/MODEL_REGISTRY_REFRESH_2026_11_11.md) for
-retirements, promotional pricing dates and adapter limits. Catalog metadata does
-not establish account entitlement.
+This beta adds Gemini 4 Hydrogen, hosted LLM entries and Grok Video 1.5 Lite.
+Read the [November 17 vendor review](library/docs/MODEL_REGISTRY_REVIEW_2026_11_17.md)
+for exact model IDs, prices, unknown limits and endpoint support. The six catalogs
+cover LLM, image, video, voice and embeddings; catalog metadata does not establish
+account entitlement or add an unimplemented provider transport.
 
 Eligible local applications can opt in to [ChatGPT plan access](library/docs/CHATGPT_PLAN_ACCESS.md).
 The host owns OAuth, registration and rotating credentials; ordinary API-key setup

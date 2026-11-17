@@ -592,7 +592,7 @@ home = home
   .replace(/\{\{doc:([^}]+)\}\}/g, (_, f) => docHref(f, "index.html"));
 await emit("index.html", "TypeScript agents, tools and memory", home, {
   description:
-    "OneRingAI v2 beta.4: TypeScript agents, refreshed LLM and media catalogs, opt-in ChatGPT plan access, API tools, memory and swappable harnesses.",
+    "OneRingAI v2 beta.5: TypeScript agents, Gemini 4 Hydrogen and Grok Video 1.5 Lite, reviewed model catalogs, API tools, memory and swappable harnesses.",
 });
 function sourceWithAnchors(file, source) {
   const lines = source.split("\n");

@@ -5,6 +5,9 @@ MIT-licensed terminal and desktop apps built with OneRingAI. Run both from sourc
 These recipes use the documentation snapshot for `oneringai@{{version}}`.
 The [shared coding-agent guide](library/AGENTS.md) covers current v2 APIs, plugin
 registration, and host boundaries when adapting these applications.
+Beta.5 includes the [November 17 model review](library/docs/MODEL_REGISTRY_REVIEW_2026_11_17.md):
+select models through their own vendor connector and implemented endpoint.
+Trusted-access and cloud-billed entries retain their account and billing requirements.
 
 ## AMOS: terminal agent
 
@@ -29,7 +32,7 @@ Configure a connector before making model calls. Runtime mode requires the host 
 
 An Electron app for conversations, models, tools, and media. Supports light, dark, and system themes, plus adjustable text size.
 
-The beta.4 source adds **Continue with ChatGPT** in first-run setup and shared
+Since beta.4, the source includes **Continue with ChatGPT** in first-run setup and shared
 account management. It loads the selected account's available models before
 creating the first agent. Eligible accounts and host OAuth consent are required;
 production sign-in has not been live-verified. Signing out or hitting a plan limit
